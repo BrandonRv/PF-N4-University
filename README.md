@@ -1,3 +1,14 @@
+# Avance y Explicación de Ejecucion
+
+![Captura de pantalla 2023-11-28 a la(s) 3 00 02 p m](https://github.com/BrandonRv/PF-N4-University/assets/138633220/82aea4e1-2efd-4410-8a9f-2dd9620339bc)
+
+
+# Video
+
+
+https://github.com/BrandonRv/PF-N4-University/assets/138633220/534559b5-52e8-42b2-9f1d-5b58fdfd1555
+
+
 # Instrucciones
 
 Bienvenido al proyecto final del nivel 3. En este proyecto estaremos aplicando los conocimientos adquiridos a lo largo del nivel. Sigue las instrucciones de este archivo para completar el proyecto y ten en cuenta que estas mismas se tomarán en cuenta para la evaluación final del proyecto.
