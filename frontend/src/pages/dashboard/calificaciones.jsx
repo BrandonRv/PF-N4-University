@@ -12,21 +12,21 @@ import { useUniversityContext } from "../../context/UniversityProvider";
 
 export function Calificaciones() {
 
-  const { permisos } = useUniversityContext();
+  const { calificaciones } = useUniversityContext();
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            Lista de Permisos
+           Calificaciones y mensajes de tus Clases
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["email/usuario", "permiso", "estado", "acciones"].map((el) => (
+                {["nombre de clase", "calificacion", "mensaje"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -42,15 +42,15 @@ export function Calificaciones() {
               </tr>
             </thead>
             <tbody>
-              {permisos.map(
-                ({ email, nombre_del_rol, condicion }, key) => {
-                  const className = `py-3 px-5 ${key === permisos.length - 1
+              {calificaciones.map(
+                ({ id_materia, name_materia, calificacion, observaciones }, key) => {
+                  const className = `py-3 px-5 ${key === calificaciones.length - 1
                       ? ""
                       : "border-b border-blue-gray-50"
                     }`;
 
                   return (
-                    <tr key={email}>
+                    <tr key={id_materia}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
                           <Avatar src={avatar1} alt="usuario.png" size="sm" variant="rounded" />
@@ -60,31 +60,19 @@ export function Calificaciones() {
                               color="blue-gray"
                               className="font-semibold"
                             >
-                              {email}
+                              {name_materia}
                             </Typography>
                           </div>
                         </div>
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {nombre_del_rol === 'ADMIN' ? <Chip variant="gradient" color="yellow" value="Administrador" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> :
-                            (nombre_del_rol === 'MAESTRO' ? <Chip variant="gradient" color="blue" value="Maestro" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> :
-                              (nombre_del_rol === 'ALUMNO' ? <Chip variant="gradient" color="blue-gray" value="Alumno" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> :
-                                <Chip variant="gradient" color="red" value="Sin Rol" className="py-0.5 px-2 text-[11px] font-medium w-fit" />))}
+                        {calificacion === null ?  <Chip variant="gradient" color="blue-gray" value="Sin calificación" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : (calificacion) }
                         </Typography>
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {condicion === '0' ? <Chip variant="gradient" color="red" value="Inactivo" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : <Chip variant="gradient" color="green" value="Activo" className="py-0.5 px-2 text-[11px] font-medium w-fit" />}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography
-                          as="a"
-                          href="#"
-                          className="text-xs font-semibold text-blue-gray-600"
-                        >
-                          Edit
+                        {observaciones ===  null ? <Chip variant="gradient" color="blue" value="No hay mensajes" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : (observaciones) }
                         </Typography>
                       </td>
                     </tr>

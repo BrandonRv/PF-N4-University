@@ -16,7 +16,7 @@ export function SignIn() {
   const { setCorreo, setContrasena, error, handleSubmit, correo, contrasena, rol } = useUniversityContext();
   const iconRef = useRef(null);
   const DarkMode = useDarkMode(iconRef);
-  localStorage.setItem("rol", rol);
+  sessionStorage.setItem("rol", rol);
 
   return (
     <section

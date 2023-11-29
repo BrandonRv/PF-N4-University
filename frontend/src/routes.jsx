@@ -11,7 +11,7 @@ const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
-const rolSeccion = parseInt(localStorage.getItem("rol"));
+const rolSeccion = parseInt(sessionStorage.getItem("rol"));
 
 export const routes = [
   {

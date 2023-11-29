@@ -13,7 +13,6 @@ import logoU from "../../assets/logoU.jpg"
 export function Sidenav({ brandName, routes }) {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
-  //const rolSeccion = parseInt(localStorage.getItem("rol"));
   const { usuario, catergoria, rol } = useUniversityContext();
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",

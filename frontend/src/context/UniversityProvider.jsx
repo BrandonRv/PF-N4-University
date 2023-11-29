@@ -16,7 +16,11 @@ export const UniversityProvider = ({ children }) => {
   const [maestros, setMaestros] = useState([]);
   const [permisos, setPermisos] = useState([]);
   const [usuario, setUsuario] = useState([]);
+  const [maestroClass, setMaestroClass] = useState([]);
+  const [calificaciones, setCalificaciones] = useState([]);
+  const [faltante, setFaltante] = useState([])
   const token = localStorage.getItem("token");
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,7 +49,7 @@ export const UniversityProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("token", data.token);
         setRol(parseInt(data?.rol, 10));
-        localStorage.setItem("rol", data.rol);
+        sessionStorage.setItem("rol", data.rol);
         window.location.href = "/dashboard";
       })
       .catch((err) => {
@@ -70,9 +74,15 @@ export const UniversityProvider = ({ children }) => {
       setMaestros(data1?.maestrosAll);
       setPermisos(data1?.permisosInfo);
       setRol(parseInt(data1?.rolUser, 10));
+      setMaestroClass(data1?.studentMaestro);
+      setCalificaciones(data1?.seeRatings);
+      setFaltante(data1?.seeMaterias);
     }
 
-    datosDashboard();
+     datosDashboard();
+     const intervalId = setInterval(datosDashboard, 5000); 
+     return () => clearInterval(intervalId);
+
   }, [token, seccion, rol]);
 
   const contextValue = {
@@ -82,6 +92,8 @@ export const UniversityProvider = ({ children }) => {
     handleSubmit,
     error,
     setContrasena,
+    calificaciones,
+    faltante,
     correo,
     usuario,
     catergoria,
@@ -89,6 +101,7 @@ export const UniversityProvider = ({ children }) => {
     alumnos,
     maestros,
     permisos,
+    maestroClass,
     rol,
   };
 

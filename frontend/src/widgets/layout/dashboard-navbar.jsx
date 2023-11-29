@@ -32,6 +32,8 @@ export function DashboardNavbar() {
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
   const { usuario } = useUniversityContext();
 
+  //console.log(page)
+
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}

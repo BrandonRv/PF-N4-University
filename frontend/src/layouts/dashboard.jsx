@@ -15,7 +15,7 @@ import { useUniversityContext } from "../context/UniversityProvider";
 
 export function Dashboard() {
   const { seccion, rol } = useUniversityContext();
-  localStorage.setItem("rol", rol);
+  sessionStorage.setItem("rol", rol);
   const [controller, dispatch] = useMaterialTailwindController();
   const token = localStorage.getItem("token");
   const { sidenavType } = controller;
