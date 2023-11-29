@@ -25,7 +25,6 @@ import {
 } from "@/context";
 import { useUniversityContext } from "../../context/UniversityProvider";
 
-
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;

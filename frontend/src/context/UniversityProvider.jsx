@@ -5,6 +5,7 @@ const UniversityContext = createContext();
 export const useUniversityContext = () => useContext(UniversityContext);
 
 export const UniversityProvider = ({ children }) => {
+  const [rol, setRol] = useState(null)
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
@@ -43,6 +44,8 @@ export const UniversityProvider = ({ children }) => {
       })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        setRol(parseInt(data?.rol, 10));
+        localStorage.setItem("rol", data.rol);
         window.location.href = "/dashboard";
       })
       .catch((err) => {
@@ -66,10 +69,11 @@ export const UniversityProvider = ({ children }) => {
       setAlumnos(data1?.studentAll);
       setMaestros(data1?.maestrosAll);
       setPermisos(data1?.permisosInfo);
+      setRol(parseInt(data1?.rolUser, 10));
     }
 
     datosDashboard();
-  }, [token, seccion]);
+  }, [token, seccion, rol]);
 
   const contextValue = {
     seccion,
@@ -85,6 +89,7 @@ export const UniversityProvider = ({ children }) => {
     alumnos,
     maestros,
     permisos,
+    rol,
   };
 
   return (

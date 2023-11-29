@@ -30,7 +30,8 @@ class LoginController
 
                 $token = \Firebase\JWT\JWT::encode($payload, $key, 'HS256');
                 $response = array(
-                    "token" => $token  //"dashboard" => "/backend/dashboard"
+                    "token" => $token,  //"dashboard" => "/backend/dashboard"
+                    "rol" => $usuario[0]["id_rol"]
                 );
                 http_response_code(200);
                 echo json_encode($response);
