@@ -5,7 +5,7 @@ const UniversityContext = createContext();
 export const useUniversityContext = () => useContext(UniversityContext);
 
 export const UniversityProvider = ({ children }) => {
-  const [rol, setRol] = useState(null)
+  const [rol, setRol] = useState(null);
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
@@ -24,13 +24,7 @@ export const UniversityProvider = ({ children }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/backend/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ correo, contrasena }),
-    })
+    fetch("http://localhost:3000/backend/login", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ correo, contrasena }), })
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -47,10 +41,14 @@ export const UniversityProvider = ({ children }) => {
         }
       })
       .then((data) => {
+        setSeccion(data.error); 
+        setError(data.error);
         localStorage.setItem("token", data.token);
         setRol(parseInt(data?.rol, 10));
         sessionStorage.setItem("rol", data.rol);
+        if (data.error !== 'Sin Autorización') {
         window.location.href = "/dashboard";
+      }
       })
       .catch((err) => {
         setError(err.message);
@@ -80,10 +78,10 @@ export const UniversityProvider = ({ children }) => {
     }
 
      datosDashboard();
-     const intervalId = setInterval(datosDashboard, 5000); 
-     return () => clearInterval(intervalId);
+      const intervalId = setInterval(datosDashboard, 1000); 
+      return () => clearInterval(intervalId);
 
-  }, [token, seccion, rol]);
+  }, [ token, rol, seccion ]);
 
   const contextValue = {
     seccion,

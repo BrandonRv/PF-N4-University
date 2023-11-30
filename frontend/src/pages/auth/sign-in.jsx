@@ -12,8 +12,7 @@ import useDarkMode from "../../service/useDarkMode";
 
 export function SignIn() {
 
-  
-  const { setCorreo, setContrasena, error, handleSubmit, correo, contrasena, rol } = useUniversityContext();
+  const { setCorreo, setContrasena, error, handleSubmit, correo, contrasena, rol} = useUniversityContext();
   const iconRef = useRef(null);
   const DarkMode = useDarkMode(iconRef);
   sessionStorage.setItem("rol", rol);
@@ -59,7 +58,7 @@ export function SignIn() {
               }}
             />
           </div>
-          <p className="text-center text-red-500 text-sm">{error && <p>{error}</p>}</p>
+          <p className="text-center text-red-500 text-sm">{error && <p>{error}</p>} </p>
           <Checkbox
             label={
               <Typography

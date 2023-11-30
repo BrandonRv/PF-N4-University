@@ -36,44 +36,65 @@ class PerfilController
                     $permission = $this->model->permission();
                     $teacherAll = $this->model->teacherAll();
                     $alumnosAll = $this->model->alumnosAll();
-                    $materiasInfo = $this->model->subjectsAll(); //subjectsAll
-                    echo json_encode([
-                        'nombre' => $usuario,
-                        'rolUser' => $rol,
-                        'perfilInfo' => $profile,
-                        'permisosInfo' => $permission,
-                        'maestrosAll' => $teacherAll,
-                        'studentAll' => $alumnosAll,
-                        'subjectsInfo' => $materiasInfo,
-                        'categoria' => 'Administrador',
-                        'error' => 'No'
-                    ]);
+                    $materiasInfo = $this->model->subjectsAll();
+
+                    if ($profile[0]["condicion"] === '0') {
+                        echo json_encode([
+                            'error' => 'Sin Autorización'
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'nombre' => $usuario,
+                            'rolUser' => $rol,
+                            'perfilInfo' => $profile,
+                            'permisosInfo' => $permission,
+                            'maestrosAll' => $teacherAll,
+                            'studentAll' => $alumnosAll,
+                            'subjectsInfo' => $materiasInfo,
+                            'categoria' => 'Administrador',
+                            'error' => 'No'
+                        ]);
+                    }
                 } else if ($rol === "2") {
 
                     $profile = $this->model->profileInfo($userID);
                     $maestroAlumno = $this->model->studentTeacher($userID);
-                    echo json_encode([
-                        'nombre' => $usuario,
-                        'rolUser' => $rol,
-                        'perfilInfo' => $profile,
-                        'studentMaestro' => $maestroAlumno,
-                        'categoria' => 'Maestro',
-                        'error' => 'No'
-                    ]);
+
+                    if ($profile[0]["condicion"] === '0') {
+                        echo json_encode([
+                            'error' => 'Sin Autorización'
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'nombre' => $usuario,
+                            'rolUser' => $rol,
+                            'perfilInfo' => $profile,
+                            'studentMaestro' => $maestroAlumno,
+                            'categoria' => 'Maestro',
+                            'error' => 'No'
+                        ]);
+                    }
                 } else if ($rol === "3") {
 
                     $profile = $this->model->profileInfo($userID); // calificacionesAll
                     $verRatings = $this->model->calificacionesAll($userID);
                     $verMaterias = $this->model->materiaNOTinsert($userID);
-                    echo json_encode([
-                        'nombre' => $usuario,
-                        'rolUser' => $rol,
-                        'perfilInfo' => $profile,
-                        'seeRatings' =>  $verRatings,
-                        'seeMaterias' => $verMaterias,
-                        'categoria' => 'Alumno',
-                        'error' => 'No'
-                    ]);
+
+                    if ($profile[0]["condicion"] === '0') {
+                        echo json_encode([
+                            'error' => 'Sin Autorización'
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'nombre' => $usuario,
+                            'rolUser' => $rol,
+                            'perfilInfo' => $profile,
+                            'seeRatings' =>  $verRatings,
+                            'seeMaterias' => $verMaterias,
+                            'categoria' => 'Alumno',
+                            'error' => 'No'
+                        ]);
+                    }
                 } else {
                     echo json_encode([
                         'error' => 'Sin rol Asignado.'

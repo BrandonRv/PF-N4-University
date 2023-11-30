@@ -3,18 +3,30 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Typography,
-  Avatar,
+  Typography
 } from "@material-tailwind/react";
-import avatar1 from "../../assets/user.png"
 import { useUniversityContext } from "../../context/UniversityProvider";
 
 export function Materias() {
 
   const { calificaciones, faltante  } = useUniversityContext();
 
-  // mb-12 flex gap-12 flex-col
-  //overflow-x-scroll px-0 pt-0 pb-2
+//const token = localStorage.getItem("token");
+
+// funcion para editar con fetch
+// const editarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
+// funcion para eliminar con fetch 
+// const eliminarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -29,7 +41,7 @@ export function Materias() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["materia", "darsede baja"].map((el) => (
+                {["materia", "darse de baja"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"

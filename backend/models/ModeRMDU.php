@@ -37,7 +37,8 @@ class ModeRMDU
         apellido,
         email,
         address,
-        cumpleaños
+        cumpleaños,
+        condicion
         FROM {$this->table} WHERE id_user = {$idEntero}");
 
         $data = $res->fetch_all(MYSQLI_ASSOC);
@@ -47,6 +48,7 @@ class ModeRMDU
     public function permission()
     {
         $res = $this->db->query("SELECT 
+            u.id_user,
             u.email, 
             r.nombre_rol AS nombre_del_rol, 
             u.condicion 

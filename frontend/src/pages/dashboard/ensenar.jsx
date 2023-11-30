@@ -14,6 +14,23 @@ export function Ensenar() {
 
   const { maestroClass } = useUniversityContext();
 
+//const token = localStorage.getItem("token");
+
+// funcion para editar con fetch
+// const editarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
+// funcion para eliminar con fetch 
+// const eliminarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
+
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
@@ -72,7 +89,7 @@ export function Ensenar() {
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                         {observaciones ===  null ? <Chip variant="gradient" color="blue" value="No hay mensajes" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : <Chip variant="gradient" color="green" value={observaciones} className="py-0.5 px-2 text-[11px] font-medium w-fit" /> }
+                         {observaciones ===  null ? (observaciones) : <Chip variant="gradient" color="blue" value={observaciones} className="py-0.5 px-2 text-[11px] font-medium w-fit" /> }
                         </Typography>
                       </td>
                       <td className={className}>

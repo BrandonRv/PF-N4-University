@@ -15,51 +15,199 @@ class UpdateController
         $this->model = new ModelUpdate();
     }
 
-    public function desencrypt($token, $table)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
     {
         try {
 
             $key = "clavecifrado";
             $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
-            $usuario = $payload->usuario;
-            $userID = $payload->id_user;
             $rol = $payload->rol;
             $vencimiento = $payload->vencimiento;
-            $idEntero = intval($userID);
+
+            if ($vencimiento < time()) {
+                // El token ha caducado
+                echo json_encode(['error' => 'Sección Caducada.'], 401);
+            } else if ($update === 'profile') {
+
+                if ($rol === '1') {
+                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } else if ($update === 'permisos') {
+
+                if ($rol === '1') {
+                    $respon = $this->model->permission($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } else if ($update === 'maestros') {
+
+                if ($rol === '1') {
+                    $respon = $this->model->maestros($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } else if ($update === 'alumnos') {
+
+                if ($rol === '1') {
+                    $respon = $this->model->alumnos($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } else if ($update === 'clases') {
+
+                if ($rol === '1') {
+                    $respon = $this->model->clases($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            echo json_encode(['error' => 'Sección inválida.'], 401);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE MAESTROS ------------------------------------ //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public function teachersUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+    {
+        try {
+
+            $key = "clavecifrado";
+            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
+            //$usuario = $payload->usuario;
+            //$userID = $payload->id_user;
+            $rol = $payload->rol;
+            $vencimiento = $payload->vencimiento;
+            //$idEntero = intval($userID);
 
 
             if ($vencimiento < time()) {
                 // El token ha caducado
                 echo json_encode(['error' => 'Sección Caducada.'], 401);
-            } else {
-                if ($rol === '1') {
 
-                    $this->model->verification($table, $idEntero);
+            } else if ($update === 'profile') {
+
+                if ($rol === '2') {
+                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
                     echo json_encode([
+                        'respon' => $respon,
                         'error' => 'Dato Actualizado.'
                     ]);
-
-                } else if ($rol === "2") {
-
-                    $this->model->verification($table,  $idEntero);
-                    echo json_encode([
-                        'error' => 'Dato Actualizado.'
-                    ]);
-
-                } else if ($rol === "3") {
-
-                    $this->model->verification($table,  $idEntero);
-                    echo json_encode([
-                        'error' => 'Dato Actualizado.'
-                    ]);
-
                 } else {
                     echo json_encode([
-                        'error' => 'Sin Autorizacion para Esta Accion'
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
                     ]);
-                    return;
+                }
+            } else if ($update === 'assignment') {
+
+                if ($rol === '2') {
+                    $respon = $this->model->assignment($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
                 }
             }
+
+        } catch (\Exception $e) {
+            echo json_encode(['error' => 'Sección inválida.'], 401);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function alumnoUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+    {
+        try {
+
+            $key = "clavecifrado";
+            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
+            //$usuario = $payload->usuario;
+            //$userID = $payload->id_user;
+            $rol = $payload->rol;
+            $vencimiento = $payload->vencimiento;
+            //$idEntero = intval($userID);
+
+
+            if ($vencimiento < time()) {
+                // El token ha caducado
+                echo json_encode(['error' => 'Sección Caducada.'], 401);
+            } else if ($update === 'profile') {
+
+                if ($rol === '3') {
+                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } else if ($update === 'maestros') {
+
+                if ($rol === '3') {
+                    $respon = $this->model->insert($id_user, $id_rol, $correo, $condicion);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+            } 
+            
         } catch (\Exception $e) {
             echo json_encode(['error' => 'Sección inválida.'], 401);
         }

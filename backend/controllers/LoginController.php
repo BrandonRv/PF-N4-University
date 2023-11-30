@@ -19,7 +19,7 @@ class LoginController
 
         if (count($usuario) > 0) {
 
-            if (password_verify($contrasena, $usuario[0]["password"])) { // Para pruebas $contrasena === $usuario[0]["password"]
+            if (password_verify($contrasena, $usuario[0]["password"])) {
                 $key = "clavecifrado";
                 $payload = array(
                     "usuario" => $usuario[0]["email"],
@@ -27,14 +27,24 @@ class LoginController
                     "rol" => $usuario[0]["id_rol"],
                     "vencimiento" => time() + 3600
                 );
-
                 $token = \Firebase\JWT\JWT::encode($payload, $key, 'HS256');
                 $response = array(
-                    "token" => $token,  //"dashboard" => "/backend/dashboard"
-                    "rol" => $usuario[0]["id_rol"]
+                    "token" => $token, 
+                    "rol" => $usuario[0]["id_rol"],
+                    "condicion" => $usuario[0]["condicion"],
                 );
-                http_response_code(200);
-                echo json_encode($response);
+
+                if ($usuario[0]["condicion"] === '0') {
+                    echo json_encode([
+                        "token" => $token,
+                        'error' => 'Sin Autorización',
+                        "rol" => $usuario[0]["id_rol"],
+                        "condicion" => $usuario[0]["condicion"],
+                    ]);
+                } else {
+                    http_response_code(200);
+                    echo json_encode($response);
+                }
             } else {
                 http_response_code(401);
                 $response1 = array(

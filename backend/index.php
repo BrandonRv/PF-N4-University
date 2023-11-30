@@ -35,20 +35,11 @@ if ($method === "POST") {
             $perfilController->desencrypt($token);
             break;
 
-
-        case '/backend/update':
+        case '/backend/dashboard/profile':
 
             $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
             $token = str_replace("Bearer ", "", $authHeader);
-            $postData = json_decode(file_get_contents("php://input"), true);
-
-            if (isset($postData["table"])) {
-                $table = $postData["table"];
-                $UpdateController->desencrypt($token, $table);
-        } else {
-            http_response_code(400);
-            echo "Datos de usuario Inválidos en la Solicitud.";
-        }
+            $perfilController->desencrypt($token);
             break;
 
         default:
@@ -65,9 +56,170 @@ if ($method === "GET") {
             echo "Este es el Index";
             break;
 
-        case '/backend/dashboard':
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-            echo "Este es el dashboard";
+        case '/backend/dashboard/permission/edit':
+
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/permission/delete':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
+            break;
+
+        case '/backend/dashboard/teachers/edit':
+            
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/teachers/delete':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
+            break;
+
+        case '/backend/dashboard/students/edit':
+
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/students/delete':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
+            break;
+
+        case '/backend/dashboard/classes/edit':
+
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+
+        case '/backend/dashboard/classes/delete':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
+            break;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE MAESTROS ------------------------------------ //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        case '/backend/dashboard/weighing/edit':
+
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->teachersUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/weighing/delete':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
+            break;
+
+            
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        case '/backend/dashboard/manageclasses/insert':
+
+            $getData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+                $token = $getData["token"];
+                $update = $getData["update"];
+                $id_user = $getData["id_user"];
+                $id_rol = $getData["id_rol"];
+                $correo = $getData["correo"];
+                $condicion = $getData["condicion"];
+                $UpdateController->alumnoUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+            } else {
+                http_response_code(400);
+                echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/manageclasses/remove':
+
+            $authHeader = $_SERVER["HTTP_AUTHORIZATION"];
+            $token = str_replace("Bearer ", "", $authHeader);
+            $perfilController->desencrypt($token);
             break;
 
         default:

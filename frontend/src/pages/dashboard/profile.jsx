@@ -24,6 +24,23 @@ export function Profile() {
 
 const { usuario } = useUniversityContext();
 
+//const token = localStorage.getItem("token");
+
+// funcion para editar con fetch
+// const editarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
+// funcion para eliminar con fetch 
+// const eliminarDatos = async () => {
+
+//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+//   const data1 = await res.json();
+// }
+
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">

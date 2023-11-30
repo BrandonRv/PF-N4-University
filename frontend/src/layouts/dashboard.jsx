@@ -23,6 +23,7 @@ export function Dashboard() {
   let seccionClose = "Sección inválida."
   let seccionExp = "Sección Caducada."
   let seccionRol = "Sin rol Asignado."
+  let condicion = "Sin Autorización"
   const body = document.body;
 
   if (!token) {
@@ -32,6 +33,8 @@ export function Dashboard() {
   } else if (seccionExp === seccion) {
     navigate("/auth/sign-in");
   } else if (seccionRol === seccion) {
+    navigate("/auth/sign-in");
+  } else if (condicion === seccion) {
     navigate("/auth/sign-in");
   }
 

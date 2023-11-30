@@ -26,55 +26,30 @@ class ModelUpdate
         }
     }
 
-    function verification($table)
+
+    public function profile () 
     {
-
-     $tableUser1 = "usuarios";
-     $tableRol1 = "rol";
-     $tableMateria1 = "materias";
-     $tableCalificaciones1 = "calificacion_observaciones";
-
-
-        if ($tableUser1 === $table) {
-
-            $data = $this->UpdateUser('$data_del_usuario');
-            echo json_encode([
-                'error' => $data
-            ]);
-
-        } else if ($tableRol1 === $table) {
-
-            $data = $this->UpdateRol('$data_del_usuario');
-            echo json_encode([
-                'error' => $data
-            ]);
-
-        } else if ($tableMateria1 === $table) {
-
-            $data = $this->UpdateMaterias('$data_del_usuario');
-            echo json_encode([
-                'error' => $data
-            ]);
-
-        } else if ($tableCalificaciones1 === $table) {
-
-            $data = $this->UpdateCalificaciones('$data_del_usuario');
-            echo json_encode([
-                'error' => $data
-            ]);
-        }
-    }
-
-
-    function UpdateUser () {
-
         // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
         $query = "update {$this->tableUser} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
         $this->db->query($query);
 
     }
 
-    function UpdateRol () {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function permission($id_user, $id_rol, $correo, $condicion)
+    {
+        $id = intval($id_user);
+        $rol = intval($id_rol);
+        $permiso = intval($condicion);
+
+        $res = $this->db->query("UPDATE usuarios SET email= '$correo',id_rol = '$rol',condicion = '$permiso' WHERE id_user = '$id'");
+        return $res;
+    }
+
+    public function maestros () {
 
         // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
         $query = "update {$this->tableRol} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
@@ -82,7 +57,7 @@ class ModelUpdate
 
     }
 
-    function UpdateMaterias () {
+    public function alumnos () {
 
         // AQUI ADENTRO VAN LOS QUERY EN CASVADA EN TAL CASO
         $query = "update {$this->tableMateria} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
@@ -90,14 +65,44 @@ class ModelUpdate
 
     }
 
-    function UpdateCalificaciones () {
+    public function clases () {
 
         // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
         $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
         $this->db->query($query);
 
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE MAESTROS ------------------------------------ //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public function assignment () {
+
+        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
+        $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
+        $this->db->query($query);
+
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function insert () {
+
+        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
+        $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
+        $this->db->query($query);
+
+    }
+
 }
+
+
 
 
 
