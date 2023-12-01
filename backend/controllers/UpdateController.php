@@ -20,7 +20,7 @@ class UpdateController
     // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+    public function adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert)
     {
         try {
 
@@ -61,7 +61,7 @@ class UpdateController
             } else if ($update === 'maestros') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->maestros($id_user, $id_rol, $correo, $condicion);
+                    $respon = $this->model->maestros($id_user, $correo, $nombre, $apellido, $address, $cumpleanos);
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -74,7 +74,7 @@ class UpdateController
             } else if ($update === 'alumnos') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->alumnos($id_user, $id_rol, $correo, $condicion);
+                    $respon = $this->model->alumnos($id_user, $dni, $correo, $nombre, $apellido, $address, $cumpleanos);
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -87,7 +87,7 @@ class UpdateController
             } else if ($update === 'clases') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->clases($id_user, $id_rol, $correo, $condicion);
+                    $respon = $this->model->clases($id_user, $namemateria, $maestroinsert);
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'

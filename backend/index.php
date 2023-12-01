@@ -71,7 +71,14 @@ if ($method === "GET") {
                 $id_rol = $getData["id_rol"];
                 $correo = $getData["correo"];
                 $condicion = $getData["condicion"];
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+                $nombre = null;
+                $apellido = null;
+                $address = null;
+                $cumpleanos = null;
+                $dni = null;
+                $namemateria = null;
+                $maestroinsert = null;
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario Inválidos en la Solicitud.";
@@ -89,14 +96,21 @@ if ($method === "GET") {
             
             $getData = json_decode(file_get_contents("php://input"), true);
 
-            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["correo"]) && isset($getData["nombre"]) && isset($getData["apellido"]) && isset($getData["address"]) && isset($getData["cumpleanos"])) {
                 $token = $getData["token"];
                 $update = $getData["update"];
                 $id_user = $getData["id_user"];
-                $id_rol = $getData["id_rol"];
                 $correo = $getData["correo"];
-                $condicion = $getData["condicion"];
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+                $nombre = $getData["nombre"];
+                $apellido = $getData["apellido"];
+                $address = $getData["address"];
+                $cumpleanos = $getData["cumpleanos"];
+                $id_rol = null;
+                $condicion = null;
+                $dni = null;
+                $namemateria = null;
+                $maestroinsert = null;
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario Inválidos en la Solicitud.";
@@ -114,14 +128,21 @@ if ($method === "GET") {
 
             $getData = json_decode(file_get_contents("php://input"), true);
 
-            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["dni"]) && isset($getData["correo"]) && isset($getData["nombre"]) && isset($getData["apellido"]) && isset($getData["address"]) && isset($getData["cumpleanos"])) {
                 $token = $getData["token"];
                 $update = $getData["update"];
                 $id_user = $getData["id_user"];
-                $id_rol = $getData["id_rol"];
                 $correo = $getData["correo"];
-                $condicion = $getData["condicion"];
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+                $dni = $getData["dni"];
+                $nombre = $getData["nombre"];
+                $apellido = $getData["apellido"];
+                $address = $getData["address"];
+                $cumpleanos = $getData["cumpleanos"];
+                $id_rol = null;
+                $namemateria = null;
+                $maestroinsert = null;
+                $condicion = null;
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario Inválidos en la Solicitud.";
@@ -139,14 +160,21 @@ if ($method === "GET") {
 
             $getData = json_decode(file_get_contents("php://input"), true);
 
-            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["id_rol"]) && isset($getData["correo"]) && isset($getData["condicion"])) {
+            if (isset($getData["token"]) && isset($getData["update"]) && isset($getData["id_user"]) && isset($getData["namemateria"]) && isset($getData["maestroinsert"])) {
                 $token = $getData["token"];
                 $update = $getData["update"];
                 $id_user = $getData["id_user"];
-                $id_rol = $getData["id_rol"];
-                $correo = $getData["correo"];
-                $condicion = $getData["condicion"];
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion);
+                $namemateria = $getData["namemateria"];
+                $maestroinsert = $$getData["maestroinsert"];
+                $nombre = null;
+                $id_rol = null;
+                $apellido = null;
+                $address = null;
+                $cumpleanos = null;
+                $dni = null;
+                $correo = null;
+                $condicion = null;
+                $UpdateController->adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario Inválidos en la Solicitud.";
