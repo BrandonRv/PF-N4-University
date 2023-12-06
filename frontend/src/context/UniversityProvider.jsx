@@ -12,6 +12,7 @@ export const UniversityProvider = ({ children }) => {
   const [seccion, setSeccion] = useState("");
   const [catergoria, setCatergoria] = useState("");
   const [clases, setClases] = useState([]);
+  const [asignTeacher, setAsignTeacher] = useState([]);
   const [alumnos, setAlumnos] = useState([]);
   const [maestros, setMaestros] = useState([]);
   const [permisos, setPermisos] = useState([]);
@@ -67,7 +68,8 @@ export const UniversityProvider = ({ children }) => {
       setSeccion(data1?.error);
       setUsuario(data1?.perfilInfo); 
       setCatergoria(data1?.categoria);
-      setClases(data1?.subjectsInfo);  
+      setClases(data1?.subjectsInfo);
+      setAsignTeacher(data1?.profeasign);  
       setAlumnos(data1?.studentAll);
       setMaestros(data1?.maestrosAll);
       setPermisos(data1?.permisosInfo);
@@ -101,6 +103,7 @@ export const UniversityProvider = ({ children }) => {
     permisos,
     maestroClass,
     rol,
+    asignTeacher,
   };
 
   return (

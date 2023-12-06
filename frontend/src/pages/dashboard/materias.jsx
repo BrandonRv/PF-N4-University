@@ -27,6 +27,9 @@ export function Materias() {
 //   const data1 = await res.json();
 // }
 
+//console.log(calificaciones);
+//console.log(faltante);
+
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">

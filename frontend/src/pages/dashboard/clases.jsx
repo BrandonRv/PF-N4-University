@@ -11,7 +11,7 @@ import { useUniversityContext } from "../../context/UniversityProvider";
 
 export function Clases() {
 
-  const { clases } = useUniversityContext();
+  const { clases, asignTeacher } = useUniversityContext();
 
 //const token = localStorage.getItem("token");
 
@@ -28,6 +28,10 @@ export function Clases() {
 //   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
 //   const data1 = await res.json();
 // }
+
+//console.log(asignTeacher)
+//console.log(clases[11])
+
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -68,27 +72,27 @@ export function Clases() {
                     <tr key={name_materia}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
-                          <Avatar src={avatar1} alt="usuario.png" size="sm" variant="rounded" />
+                          {name_materia === null ? '' : <Avatar src={avatar1} alt="usuario.png" size="sm" variant="rounded" />}
                           <div>
                             <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-semibold"
                             > 
-                              { nombre_maestro === null ? <Chip variant="gradient" color="yellow" value="Sin Asignacion" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : nombre_maestro + " " + apellido_maestro }
+                              { name_materia === null ? '' : nombre_maestro === null ? <Chip variant="gradient" color="yellow" value="Sin Asignacion" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : nombre_maestro + " " + apellido_maestro }
                             </Typography>
                           </div>
                         </div>
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {name_materia}
+                          {name_materia === null ? '' : name_materia}
                         </Typography>
                       </td>
 
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {cantidad_alumnos}
+                          {name_materia === null ? '' : cantidad_alumnos}
                         </Typography>
                       </td>
                       <td className={className}>
@@ -97,7 +101,7 @@ export function Clases() {
                           href="#"
                           className="text-xs font-semibold text-blue-gray-600"
                         >
-                          Edit
+                        {name_materia === null ? '' : "Edit"}
                         </Typography>
                       </td>
                     </tr>
