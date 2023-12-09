@@ -43,7 +43,6 @@ function formatNumber(number, decPlaces) {
 export function Configurator() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } = controller;
-  const [stars, setStars] = React.useState(0);
   const navigate = useNavigate();
 
   const sidenavColors = {
@@ -55,13 +54,6 @@ export function Configurator() {
     pink: "from-pink-400 to-pink-600",
   };
 
-  React.useEffect(() => {
-    const stars = fetch(
-      "https://github.com/BrandonRv" // AQUI VA EL LINK DEL REPOSITORIO
-    )
-      .then((response) => response.json())
-      .then((data) => setStars(formatNumber(data.stargazers_count, 1)));
-  }, []);
 
 const cerrarSeccions = () => {
   localStorage.removeItem('token');
@@ -149,7 +141,8 @@ const cerrarSeccions = () => {
             </Typography>
             <Switch
               id="navbar-fixed"
-              value={fixedNavbar}
+              defaultChecked={fixedNavbar === 0 ? false : true}
+              
               onChange={() => setFixedNavbar(dispatch, !fixedNavbar)}
             />
           </div>

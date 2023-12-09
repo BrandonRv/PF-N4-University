@@ -1,3 +1,4 @@
+import { React, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -5,31 +6,64 @@ import {
   Typography,
   Avatar,
   Chip,
+  IconButton,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuHandler,
 } from "@material-tailwind/react";
 import avatar1 from "../../assets/user.png"
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { useUniversityContext } from "../../context/UniversityProvider";
 
 export function Maestros() {
 
-  const { maestros } = useUniversityContext();
+  const { maestros, clases, seleccionTeacher } = useUniversityContext();
+  const [modalMaestro, setModalMaestro] = useState(false);
+  const [id_user, setId_user] = useState(null);
+  const [correo, setCorreo] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [address, setAddress] = useState("");
+  const [cumpleanos, setCumpleanos] = useState("");
+  const [respuesta, setRespuesta] = useState("");
+  const [materiaAsign, setMateriaAsign] = useState("")
+  const [asignancion, setAsignancion] = useState("null")
+  const token = localStorage.getItem("token");
+  let update = "maestros";
 
-//const token = localStorage.getItem("token");
+  // funcion para editar con fetch
+  const editMaestro = async () => {
 
-// funcion para editar con fetch
-// const editarDatos = async () => {
+    const res = await fetch("http://localhost:3000/backend/dashboard/teachers/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, update, id_user, correo, nombre, apellido, address, cumpleanos, asignancion }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+    // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
+  }
 
-//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
-//   const data1 = await res.json();
-// }
+  // funcion para eliminar con fetch 
+  // const eliminarDatos = async () => {
 
-// funcion para eliminar con fetch 
-// const eliminarDatos = async () => {
+  //   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
+  //   const data1 = await res.json();
+  // }
 
-//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
-//   const data1 = await res.json();
-// }
+  function formatDate(dateString) {
+    if (!dateString) return ''; // Manejar caso de fecha nula o indefinida
 
-//console.log(maestros);
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate;
+  }
+
+  function convertirFechaOriginal(fecha) {
+    let partes = fecha.split("-");
+    let nuevaFecha = partes[0] + "-" + partes[1] + "-" + partes[2];
+    setCumpleanos(nuevaFecha);
+  }
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -60,12 +94,11 @@ export function Maestros() {
             </thead>
             <tbody>
               {maestros.map(
-                ({ nombre, apellido, email, address, cumpleaños, name_materia }, key) => {
-                  const className = `py-3 px-5 ${
-                    key === maestros.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+                ({ id_user, nombre, apellido, email, address, cumpleaños, name_materia, id_materia }, key) => {
+                  const className = `py-3 px-5 ${key === maestros.length - 1
+                    ? ""
+                    : "border-b border-blue-gray-50"
+                    }`;
 
                   return (
                     <tr key={nombre}>
@@ -98,17 +131,36 @@ export function Maestros() {
                       </td>
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                        { name_materia === null ? <Chip variant="gradient" color="yellow" value="Sin Asignación" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : name_materia }
+                          {name_materia === null ? <Chip variant="gradient" color="yellow" value="Sin Asignación" className="py-0.5 px-2 text-[11px] font-medium w-fit" /> : name_materia}
                         </Typography>
                       </td>
                       <td className={className}>
-                        <Typography
-                          as="a"
-                          href="#"
-                          className="text-xs font-semibold text-blue-gray-600"
-                        >
-                          Edit
-                        </Typography>
+                        <Menu placement="left-start">
+                          <MenuHandler>
+                            <IconButton size="sm" variant="text" color="blue-gray">
+                              <EllipsisVerticalIcon
+                                strokeWidth={3}
+                                fill="currenColor"
+                                className="h-6 w-6"
+                              />
+                            </IconButton>
+                          </MenuHandler>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() => {
+                                setId_user(id_user);
+                                setMateriaAsign(name_materia);
+                                setAsignancion(id_materia);
+                                setCorreo(email);
+                                setNombre(nombre);
+                                setApellido(apellido);
+                                setAddress(address);
+                                setCumpleanos(cumpleaños);
+                                setModalMaestro(true);
+                              }}>Editar Datos</MenuItem>
+                            <MenuItem>Eliminarlo</MenuItem>
+                          </MenuList>
+                        </Menu>
                       </td>
                     </tr>
                   );
@@ -118,6 +170,90 @@ export function Maestros() {
           </table>
         </CardBody>
       </Card>
+      {modalMaestro ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 p-8 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between  border-b border-solid border-blueGray-300 rounded-t">
+                  <h4 className="text-2xl">
+                    Editar Maestro
+                  </h4>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setModalMaestro(false)}
+                  >
+                    <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
+                      x
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-0 flex-auto">
+                  <p className="my-4 text-blueGray-500 text-lg text-gray-700 font-normal leading-relaxed">
+                    Modifica los Datos aqui, por favor.
+                  </p>
+                </div>
+                <label>Correo Electronico</label>
+                <input
+                  type="email"
+                  className="p-2 rounded-lg border border-gray-800"
+                  defaultValue={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                />
+                <label>Nombres</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setNombre(e.target.value)} defaultValue={nombre} />
+                <label>Apellidos</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setApellido(e.target.value)} defaultValue={apellido} />
+                <label>Dirección</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setAddress(e.target.value)} defaultValue={address} />
+                <label>Fecha de Nacimiento</label>
+                <input type="date" className="p-2 rounded-lg border border-gray-800" onChange={(e) => convertirFechaOriginal(e.target.value)} defaultValue={formatDate(cumpleanos)} />
+                <label>Materia Asignada</label>
+                <select
+                  className="p-2 rounded-lg border border-gray-800"
+                  defaultValue={materiaAsign}
+                  onChange={(e) => {
+                    const selectedMateria = clases.find((materia) => materia.name_materia === e.target.value);
+                    setMateriaAsign(selectedMateria ? selectedMateria.name_materia : "null");
+                    setAsignancion(selectedMateria ? selectedMateria.id_materia : "null");
+                  }}
+                >
+                  <option>{materiaAsign === null ? "Seleccione una Materia" : materiaAsign}</option>
+                  {seleccionTeacher.map(({ name_materia: materiaValue }, key) => (
+                    <option key={key} defaultValue={materiaAsign}>
+                      {
+                        materiaValue
+                      }
+                    </option>
+                  ))}
+                  <option>DEJAR SIN MATERIA</option>
+                </select>
+                <div className="flex mt-6 mb-6 flex-col gap-6">
+                  <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    data-modal-hide="Modaless"
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setModalMaestro(false)}
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    className="bg-gray-900 text-gray-100 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={editMaestro}
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
     </div>
   );
 }

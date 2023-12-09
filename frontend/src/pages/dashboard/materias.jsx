@@ -97,8 +97,6 @@ export function Materias() {
               )}
             </tbody>
           </table>
-
-
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>

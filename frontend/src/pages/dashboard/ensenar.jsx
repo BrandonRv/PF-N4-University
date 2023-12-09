@@ -30,7 +30,7 @@ export function Ensenar() {
   // }
 
 
-  //console.log(maestroClass)
+  //console.log(maestroClass[0]?.name_materia)
   //console.log(idCalifica);
 
   return (
@@ -38,7 +38,7 @@ export function Ensenar() {
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            Alumnos de la clase {maestroClass[0].name_materia}
+            Alumnos de la clase {maestroClass[0]?.name_materia === undefined ? "(No Tienes Clase Asignada)" : maestroClass[0]?.name_materia}
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">

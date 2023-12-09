@@ -19,7 +19,10 @@ export const UniversityProvider = ({ children }) => {
   const [usuario, setUsuario] = useState([]);
   const [maestroClass, setMaestroClass] = useState([]);
   const [calificaciones, setCalificaciones] = useState([]);
-  const [faltante, setFaltante] = useState([])
+  const [faltante, setFaltante] = useState([]);
+  const [seleccionTeacher, setSeleccionTeacher] = useState([]);
+  const [seleccionmateria, setSeleccionmateria] = useState([]);
+  const [rolAll, setRolAll] = useState(null);
   const token = localStorage.getItem("token");
 
 
@@ -48,7 +51,7 @@ export const UniversityProvider = ({ children }) => {
         setRol(parseInt(data?.rol, 10));
         sessionStorage.setItem("rol", data.rol);
         if (data.error !== 'Sin Autorización') {
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard/home";
       }
       })
       .catch((err) => {
@@ -73,10 +76,17 @@ export const UniversityProvider = ({ children }) => {
       setAlumnos(data1?.studentAll);
       setMaestros(data1?.maestrosAll);
       setPermisos(data1?.permisosInfo);
+      setRolAll(data1?.rolexall);
       setRol(parseInt(data1?.rolUser, 10));
       setMaestroClass(data1?.studentMaestro);
       setCalificaciones(data1?.seeRatings);
       setFaltante(data1?.seeMaterias);
+      const clasesFiltradas = data1?.subjectsInfo.filter((clase) => clase.id_user === null);
+      const MaestrosFiltrados = data1?.subjectsInfo.filter((clase) => clase.id_user !== null);
+      const nameMateriasFiltradas = clasesFiltradas.map((clase) => clase);
+      const nameMaestrosFiltrados = MaestrosFiltrados.map((clase) => clase);
+      setSeleccionTeacher(nameMateriasFiltradas);
+      setSeleccionmateria(nameMaestrosFiltrados);
     }
 
      datosDashboard();
@@ -103,7 +113,10 @@ export const UniversityProvider = ({ children }) => {
     permisos,
     maestroClass,
     rol,
+    rolAll,
     asignTeacher,
+    seleccionTeacher,
+    seleccionmateria,
   };
 
   return (

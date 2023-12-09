@@ -24,7 +24,7 @@ export function Profile() {
 
   const { usuario } = useUniversityContext();
   const token = localStorage.getItem("token");
-  const [modalComment, setModalComment] = useState(false);
+  const [modalPerfil, setModalPerfil] = useState(false);
   const [dni, setDni] = useState(usuario[0]?.DNI);
   const [nombre, setNombre] = useState(usuario[0]?.nombre);
   const [apellido, setApellido] = useState(usuario[0]?.apellido);
@@ -41,7 +41,10 @@ export function Profile() {
     const res = await fetch("http://localhost:3000/backend/dashboard/profile/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, dni, nombre, apellido, correo, contrasena, direccion, cumpleanos }), })
     const data = await res.json();
     setRespuesta(data);
-    // Que devuelva un modal que diga Actualizaste tus Datos
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+    // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
   }
 
   function formatDate(dateString) {
@@ -167,7 +170,7 @@ export function Profile() {
               action={
                 <Tooltip content="Edit Profile">
                   <PencilIcon
-                    onClick={() => setModalComment(true)}
+                    onClick={() => setModalPerfil(true)}
                     className="h-4 w-4 cursor-pointer text-blue-gray-500"
                   />
                 </Tooltip>
@@ -176,7 +179,7 @@ export function Profile() {
           </div>
         </CardBody>
       </Card>
-      {modalComment ? (
+      {modalPerfil ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
@@ -187,10 +190,10 @@ export function Profile() {
                   </h4>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setModalComment(false)}
+                    onClick={() => setModalPerfil(false)}
                   >
                     <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
-                      ×
+                      x
                     </span>
                   </button>
                 </div>
@@ -212,23 +215,23 @@ export function Profile() {
                 <label>Correo</label>
                 <input type="email" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setCorreo(e.target.value)} defaultValue={usuario[0]?.email} />
                 <label>Contraseña</label>
-                <input type="password" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setContrasena(e.target.value)} defaultValue="****" />
+                <input type="password" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setContrasena(e.target.value)} placeholder="*******" required/>
                 <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     data-modal-hide="Modaless"
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setModalComment(false)}
+                    onClick={() => setModalPerfil(false)}
                   >
-                    Close
+                    Cancelar
                   </button>
                   <button
                     className="bg-gray-900 text-gray-100 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={editProfile}
                   >
-                    Save Changes
+                    Guardar Cambios
                   </button>
                 </div>
               </div>
