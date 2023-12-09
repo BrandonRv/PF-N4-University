@@ -50,24 +50,30 @@ class ModeRMDU
         $res = $this->db->query("SELECT 
             u.id_user,
             u.email, 
-            r.nombre_rol AS nombre_del_rol, 
+            u.id_rol,
+            r.nombre_rol AS nombre_del_rol,
             u.condicion 
         FROM {$this->tableInfo} 
         JOIN rol r ON u.id_rol = r.id_rol");
-
         $data = $res->fetch_all(MYSQLI_ASSOC);
-        return $data;
+
+        $resrol = $this->db->query("SELECT id_rol FROM rol");
+        $datarol = $resrol->fetch_all(MYSQLI_ASSOC);
+    
+        return array($data, $datarol);
     }
 
     public function teacherAll()
     {
         $res = $this->db->query("SELECT 
+            u.id_user,
             u.nombre, 
             u.apellido, 
             u.email, 
             u.address, 
             u.cumpleaños, 
-            m.name_materia 
+            m.name_materia,
+            m.id_materia
         FROM {$this->tableInfo} 
         LEFT JOIN materias m ON u.maestro = m.id_materia 
         WHERE u.id_rol = 2");
@@ -79,6 +85,7 @@ class ModeRMDU
     public function alumnosAll()
     {
         $res = $this->db->query("SELECT
+        id_user,
         DNI,
         nombre,
         apellido,
@@ -91,11 +98,15 @@ class ModeRMDU
         return $data;
     }
 
-    public function subjectsAll()
+    public function subjectsAll() //---------------------------------------------- FALTA REALIZAR ------------------------------------------//
     {
+        $res1 = $this->db->query("SELECT id_user, nombre, apellido FROM usuarios WHERE maestro IS NULL AND id_rol = 2");
         $res = $this->db->query("CALL obtenerInformacionMaterias()");
+       
+
         $data = $res->fetch_all(MYSQLI_ASSOC);
-        return $data;
+        $data1 = $res1->fetch_all(MYSQLI_ASSOC);
+        return array($data, $data1);
     }
 
 
@@ -113,7 +124,8 @@ class ModeRMDU
         $res = $this->db->query("SELECT
         c.id_materia,
         c.calificacion, 
-        c.observaciones, 
+        c.observaciones,
+        c.id_cali, 
         m.name_materia
         FROM {$this->tableCalificaciones} 
         JOIN usuarios u ON c.id_maestro = u.id_user 

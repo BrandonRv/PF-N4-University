@@ -12,26 +12,28 @@ import { useUniversityContext } from "../../context/UniversityProvider";
 
 export function Ensenar() {
 
-
+  const { maestroClass } = useUniversityContext();
   const [modalCali, setModalCali] = useState(false);
   const [modalComment, setModalComment] = useState(false);
-  const [idCalifica, setIdCalifica] = useState(null);
+  const [id_cali, setId_cali] = useState("null");
   const [calificacion, setCalificacion] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const { maestroClass } = useUniversityContext();
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [respuesta, setRespuesta] = useState("");
+  const token = localStorage.getItem("token");
 
-  //const token = localStorage.getItem("token");
+  //funcion para editar con fetch
+  const editCalificaciones = async () => {
 
-  // funcion para editar con fetch
-  // const editarDatos = async () => {
-
-  //   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, idCalifica, calificacion, mensaje }), })
-  //   const data1 = await res.json();
-  // }
-
-
-  //console.log(maestroClass[0]?.name_materia)
-  //console.log(idCalifica);
+    const res = await fetch("http://localhost:3000/backend/dashboard/weighing/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, id_cali, calificacion, mensaje }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+    // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
+  }
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -97,14 +99,27 @@ export function Ensenar() {
                       <td className={className}>
                         <div className="flex">
                           <Typography
-
-                            onClick={() => { setModalCali(true); setIdCalifica(id_cali) }}
+                            onClick={() => { 
+                              setId_cali(id_cali);
+                              setNombre(nombre_alumno);
+                              setApellido(apellido_alumno);
+                              setCalificacion(calificacion); 
+                              setMensaje(observaciones);
+                              setModalCali(true); 
+                            }}
                             className="text-xs font-semibold text-blue-gray-600 cursor-pointer"
                           >
                             {nombre_alumno === null ? null : <i class="fa-solid fa-notes-medical fa-xl"></i>}
                           </Typography>
                           <Typography
-                            onClick={() => { setModalComment(true); setIdCalifica(id_cali) }}
+                            onClick={() => { 
+                              setId_cali(id_cali);
+                              setNombre(nombre_alumno);
+                              setApellido(apellido_alumno);
+                              setCalificacion(calificacion); 
+                              setMensaje(observaciones); 
+                              setModalComment(true);  
+                            }}
                             className="text-xs font-semibold ml-4 text-blue-gray-600 cursor-pointer"
                           >
                             {nombre_alumno === null ? null : <i class="fa-solid fa-comment fa-xl"></i>}
@@ -122,16 +137,13 @@ export function Ensenar() {
       {modalCali ? (
         <>
           <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
               <div className="border-0 p-8 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl">
+                  <h4 className="text-2xl">
                     Añadir Calificación
-                  </h3>
+                  </h4>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalCali(false)}
@@ -141,13 +153,15 @@ export function Ensenar() {
                     </span>
                   </button>
                 </div>
-                {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                    Ingrese la Calificación del Alumno.
+                    Ingrese la Calificación del Alumno {nombre + " " + apellido}
                   </p>
                 </div>
-                <input type="number" min="0" max="100" className="p-4 rounded-lg text-black border-l-light-blue-900" name="idupdate" valueDefault="1234" />
+                <input type="number" min="1" max="100" placeholder="1 al 100" className="p-4 rounded-lg border border-gray-800" onChange={(e) => setCalificacion(e.target.value)} defaultValue={calificacion} />
+                <div className="flex mt-6 mb-6 flex-col gap-6">
+                  <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+                </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     data-modal-hide="Modaless"
@@ -155,14 +169,14 @@ export function Ensenar() {
                     type="button"
                     onClick={() => setModalCali(false)}
                   >
-                    Close
+                    Cerrar
                   </button>
                   <button
-                    className="bg-emerald-500 text-gray-800 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-gray-900 text-gray-100 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setModalCali(false)}
+                    onClick={editCalificaciones}
                   >
-                    Save Changes
+                    Guardar Cambios
                   </button>
                 </div>
               </div>
@@ -177,13 +191,11 @@ export function Ensenar() {
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
               <div className="border-0 p-8 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl">
+                  <h4 className="text-2xl">
                     Añadir Mensaje
-                  </h3>
+                  </h4>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalComment(false)}
@@ -193,13 +205,15 @@ export function Ensenar() {
                     </span>
                   </button>
                 </div>
-                {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                    Ingresa un Mensaje u Observación.
+                    Ingresa un Mensaje u Observación para {nombre + " " + apellido}
                   </p>
                 </div>
-                <input type="text" className="p-4 rounded-lg text-black border-l-light-blue-900" name="idupdate" valueDefault="1234" />
+                <input type="text" className="p-4 rounded-lg border border-gray-800" onChange={(e) => setMensaje(e.target.value)} placeholder="Ingrese un Mensaje"/>
+                <div className="flex mt-6 mb-6 flex-col gap-6">
+                  <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+                </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     data-modal-hide="Modaless"
@@ -207,14 +221,14 @@ export function Ensenar() {
                     type="button"
                     onClick={() => setModalComment(false)}
                   >
-                    Close
+                    Cerrar
                   </button>
                   <button
-                    className="bg-emerald-500 text-gray-800 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-gray-900 text-gray-100 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setModalComment(false)}
+                    onClick={editCalificaciones}
                   >
-                    Save Changes
+                    Guardar Cambios
                   </button>
                 </div>
               </div>

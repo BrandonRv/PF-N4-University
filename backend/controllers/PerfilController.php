@@ -37,6 +37,7 @@ class PerfilController
                     $teacherAll = $this->model->teacherAll();
                     $alumnosAll = $this->model->alumnosAll();
                     $materiasInfo = $this->model->subjectsAll();
+                    //$profeasign = $this->model->subjectsAll($data1);
 
                     if ($profile[0]["condicion"] === '0') {
                         echo json_encode([
@@ -47,10 +48,12 @@ class PerfilController
                             'nombre' => $usuario,
                             'rolUser' => $rol,
                             'perfilInfo' => $profile,
-                            'permisosInfo' => $permission,
+                            'permisosInfo' => $permission[0],
+                            'rolexall' => $permission[1],
                             'maestrosAll' => $teacherAll,
                             'studentAll' => $alumnosAll,
-                            'subjectsInfo' => $materiasInfo,
+                            'subjectsInfo' => $materiasInfo[0],
+                            'profeasign' => $materiasInfo[1],
                             'categoria' => 'Administrador',
                             'error' => 'No'
                         ]);

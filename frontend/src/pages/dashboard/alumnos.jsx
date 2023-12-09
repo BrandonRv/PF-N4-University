@@ -210,7 +210,6 @@ console.log(alumnos);
                 <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setAddress(e.target.value)} defaultValue={address} />
                 <label>Fecha de Nacimiento</label>
                 <input type="date" className="p-2 rounded-lg border border-gray-800" onChange={(e) => convertirFechaOriginal(e.target.value)} defaultValue={formatDate(cumpleanos)} />
-                <label>Materia Asignada</label>
                 <div className="flex mt-6 mb-6 flex-col gap-6">
                   <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
                 </div>

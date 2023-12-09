@@ -26,51 +26,43 @@ class ModelUpdate
         }
     }
 
-
-    public function profile () 
+    public function profile($userID, $dni, $nombre, $apellido, $correo, $contrasena, $direccion, $cumpleanos) 
     {
-        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
-        $query = "update {$this->tableUser} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+        $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
+        $res = $this->db->query("UPDATE usuarios SET DNI = '$dni', nombre = '$nombre', apellido = '$apellido', email = '$correo', password = '$hashed_password', address ='$direccion', cumpleaños = '$cumpleanos' WHERE id_user = '$userID'");
+        return $res;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function permission($id_user, $id_rol, $correo, $condicion)
+    public function permission($id_user, $id_rol, $correo, $condicion) // REALIZADO PERMISOS
     {
-        $id = intval($id_user);
-        $rol = intval($id_rol);
-        $permiso = intval($condicion);
-
-        $res = $this->db->query("UPDATE usuarios SET email= '$correo',id_rol = '$rol',condicion = '$permiso' WHERE id_user = '$id'");
+        $res = $this->db->query("UPDATE usuarios SET email= '$correo',id_rol = '$id_rol',condicion = '$condicion' WHERE id_user = '$id_user'");
         return $res;
     }
 
-    public function maestros () {
-
-        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
-        $query = "update {$this->tableRol} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+    public function maestros ($id_user, $correo, $nombre, $apellido, $address, $cumpleanos, $maestroasign) // REALIZADO MAESTRO
+    {
+        $res = $this->db->query("UPDATE usuarios SET email = '$correo', nombre = '$nombre', apellido = '$apellido', address ='$address', cumpleaños = '$cumpleanos', maestro = ($maestroasign) WHERE id_user = '$id_user'");
+        return $res;
     }
 
-    public function alumnos () {
-
-        // AQUI ADENTRO VAN LOS QUERY EN CASVADA EN TAL CASO
-        $query = "update {$this->tableMateria} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+    public function alumnos ($id_user, $dni, $correo, $nombre, $apellido, $address, $cumpleanos) // REALIZADO ALUMNO
+    { 
+        $res = $this->db->query("UPDATE usuarios SET DNI = '$dni', email = '$correo', nombre = '$nombre', apellido = '$apellido', address ='$address', cumpleaños = '$cumpleanos' WHERE id_user = '$id_user'");
+        return $res;
     }
 
-    public function clases () {
-
-        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
-        $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+    public function clases ($id_user, $id_materia, $namemateria, $id_maestro) // REALIZADO CLASES
+    {
+        //$id_user1 = ($id_user === "vacio") ? null : $id_user;
+        //$id_maestro1 = ($id_maestro === "vacio") ? null : $id_maestro;
+        $res = $this->db->query("UPDATE materias SET name_materia = '$namemateria' WHERE id_materia = '$id_materia'");
+        $res1 = $this->db->query("UPDATE usuarios SET maestro = NULL WHERE id_user = ($id_maestro)");
+        $res2 = $this->db->query("UPDATE usuarios SET maestro = '$id_materia' WHERE id_user = ($id_user)"); 
+        return array($res, $res1, $res2);
     }
 
 
@@ -79,12 +71,11 @@ class ModelUpdate
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public function assignment () {
-
-        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
-        $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+    public function assignment ($id_cali, $calificacion, $mensaje) // REALIZADO CALIFICACIONES Y NOTAS DE MAESTROS
+    {
+        $res = $this->db->query("UPDATE calificacion_observaciones SET calificacion = '$calificacion', observaciones = '$mensaje' WHERE id_cali = ($id_cali)"); // WHERE id_maestro = '4' AND id_materia = '5'
+        $this->db->close();
+        return $res;
     }
 
 
@@ -92,12 +83,10 @@ class ModelUpdate
     // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function insert () {
-
-        // AQUI ADENTRO VAN LOS QUERY EN CASCADA EN TAL CASO
-        $query = "update {$this->tableCalificaciones} set " . 'columna_a_actualizar Y VALOR' . "where id = {'AQUI PUEDE IR EL ID DEL DATO POR ACTUALIZAR'}";
-        $this->db->query($query);
-
+    public function insert ($id_materia, $userID) 
+    {
+        $res = $this->db->query("INSERT INTO calificacion_observaciones(id_maestro, id_materia) VALUES ('$userID','$id_materia')");
+        return $res;
     }
 
 }

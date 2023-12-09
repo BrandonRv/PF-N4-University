@@ -16,11 +16,47 @@ class UpdateController
     }
 
 
+    public function profilEdit($token, $dni, $nombre, $apellido, $correo, $contrasena, $direccion, $cumpleanos)
+    {
+        try {
+            $key = "clavecifrado";
+            $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
+            $userID = $payload->id_user;
+            $rol = $payload->rol;
+            $vencimiento = $payload->vencimiento;
+            $rolEntero = intval($rol);
+
+            if ($vencimiento < time()) {
+                // El token ha caducado
+                echo json_encode(['error' => 'Sección Caducada.'], 401);
+            } else if ($rolEntero <= 0) {
+                echo json_encode([
+                    'error' => 'No tiene autorizacion para realizar esta operacion'
+                ]);
+            } else if ($rolEntero <= 3) {
+                    $respon = $this->model->profile($userID, $dni, $nombre, $apellido, $correo, $contrasena, $direccion, $cumpleanos);
+                    echo json_encode([
+                        'respon' => $respon,
+                        'error' => 'Dato Actualizado.'
+                    ]);
+                } else {
+                    echo json_encode([
+                        'error' => 'No tiene autorizacion para realizar esta operacion'
+                    ]);
+                }
+        } catch (\Exception $e) {
+            echo json_encode([
+                'error' => 'Sección inválida.',
+                'errorExcepción' => $e
+            ], 401);
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ---------------------------- PERMISOS DE ADMINISTRADOR ----------------------------------- //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function adminUpdate($token, $update, $id_user, $id_rol, $correo, $condicion, $nombre, $apellido, $address, $cumpleanos, $dni, $namemateria, $maestroinsert)
+    public function adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign)
     {
         try {
 
@@ -32,23 +68,10 @@ class UpdateController
             if ($vencimiento < time()) {
                 // El token ha caducado
                 echo json_encode(['error' => 'Sección Caducada.'], 401);
-            } else if ($update === 'profile') {
-
-                if ($rol === '1') {
-                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
-                    echo json_encode([
-                        'respon' => $respon,
-                        'error' => 'Dato Actualizado.'
-                    ]);
-                } else {
-                    echo json_encode([
-                        'error' => 'No tiene autorizacion para realizar esta operacion'
-                    ]);
-                }
             } else if ($update === 'permisos') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->permission($id_user, $id_rol, $correo, $condicion);
+                    $respon = $this->model->permission($id_user, $id_rol, $correo, $condicion);  //------------------------ REALIZADO ------------------//
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -61,7 +84,7 @@ class UpdateController
             } else if ($update === 'maestros') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->maestros($id_user, $correo, $nombre, $apellido, $address, $cumpleanos);
+                    $respon = $this->model->maestros($id_user, $correo, $nombre, $apellido, $address, $cumpleanos, $maestroasign); //------ REALIZADO ------//
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -74,7 +97,7 @@ class UpdateController
             } else if ($update === 'alumnos') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->alumnos($id_user, $dni, $correo, $nombre, $apellido, $address, $cumpleanos);
+                    $respon = $this->model->alumnos($id_user, $dni, $correo, $nombre, $apellido, $address, $cumpleanos); //------ REALIZADO ------//
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -87,10 +110,12 @@ class UpdateController
             } else if ($update === 'clases') {
 
                 if ($rol === '1') {
-                    $respon = $this->model->clases($id_user, $namemateria, $maestroinsert);
+                    $respon = $this->model->clases($id_user, $id_materia, $namemateria, $id_maestro); //------ REALIZADO ------//
                     echo json_encode([
-                        'respon' => $respon,
-                        'error' => 'Dato Actualizado.'
+                        'respon' => $respon[0],
+                        'respon1' => $respon[1],
+                        'respon2' => $respon[2],
+                        'error' => 'Datos Actualizados.'
                     ]);
                 } else {
                     echo json_encode([
@@ -109,29 +134,22 @@ class UpdateController
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public function teachersUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+    public function teachersUpdate($token, $id_cali, $calificacion, $mensaje) //------ REALIZADO ------//
     {
         try {
 
             $key = "clavecifrado";
             $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
-            //$usuario = $payload->usuario;
-            //$userID = $payload->id_user;
             $rol = $payload->rol;
             $vencimiento = $payload->vencimiento;
-            //$idEntero = intval($userID);
-
 
             if ($vencimiento < time()) {
                 // El token ha caducado
                 echo json_encode(['error' => 'Sección Caducada.'], 401);
-
-            } else if ($update === 'profile') {
-
-                if ($rol === '2') {
-                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
+            } else if ($rol === '2') {
+                    $respon = $this->model->assignment($id_cali, $calificacion, $mensaje); //------ REALIZADO ------//
                     echo json_encode([
-                        'respon' => $respon,
+                        'respuesta' => $respon,
                         'error' => 'Dato Actualizado.'
                     ]);
                 } else {
@@ -139,21 +157,7 @@ class UpdateController
                         'error' => 'No tiene autorizacion para realizar esta operacion'
                     ]);
                 }
-            } else if ($update === 'assignment') {
-
-                if ($rol === '2') {
-                    $respon = $this->model->assignment($id_user, $id_rol, $correo, $condicion);
-                    echo json_encode([
-                        'respon' => $respon,
-                        'error' => 'Dato Actualizado.'
-                    ]);
-                } else {
-                    echo json_encode([
-                        'error' => 'No tiene autorizacion para realizar esta operacion'
-                    ]);
-                }
-            }
-
+            
         } catch (\Exception $e) {
             echo json_encode(['error' => 'Sección inválida.'], 401);
         }
@@ -164,26 +168,21 @@ class UpdateController
     // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function alumnoUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+    public function alumnoUpdate($token, $id_materia) //------ REALIZADO ------//
     {
         try {
 
             $key = "clavecifrado";
             $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($key, 'HS256'));
-            //$usuario = $payload->usuario;
-            //$userID = $payload->id_user;
             $rol = $payload->rol;
+            $userID = $payload->id_user;
             $vencimiento = $payload->vencimiento;
-            //$idEntero = intval($userID);
-
 
             if ($vencimiento < time()) {
                 // El token ha caducado
                 echo json_encode(['error' => 'Sección Caducada.'], 401);
-            } else if ($update === 'profile') {
-
-                if ($rol === '3') {
-                    $respon = $this->model->profile($id_user, $id_rol, $correo, $condicion);
+            } else if ($rol === '3') {
+                    $respon = $this->model->insert($id_materia, $userID); //------ REALIZADO ------//
                     echo json_encode([
                         'respon' => $respon,
                         'error' => 'Dato Actualizado.'
@@ -193,23 +192,49 @@ class UpdateController
                         'error' => 'No tiene autorizacion para realizar esta operacion'
                     ]);
                 }
-            } else if ($update === 'maestros') {
-
-                if ($rol === '3') {
-                    $respon = $this->model->insert($id_user, $id_rol, $correo, $condicion);
-                    echo json_encode([
-                        'respon' => $respon,
-                        'error' => 'Dato Actualizado.'
-                    ]);
-                } else {
-                    echo json_encode([
-                        'error' => 'No tiene autorizacion para realizar esta operacion'
-                    ]);
-                }
-            } 
             
         } catch (\Exception $e) {
             echo json_encode(['error' => 'Sección inválida.'], 401);
         }
     }
 }
+
+/* NOTA IMPORTANTE TODO ESTA LOGICA SE PUDO DESARROLLAR EN FUNCIONES SEPARADAS YA QUE SE PUEDE HACER LO SIGUIENTE:
+
+//----------- Para Administrador -----------//
+
+*** public function adminPermisoUpdate($token, $update, $id_user, $id_rol, $correo, $condicion)
+{
+    // CODIGO AQUI
+}
+
+*** public function adminMaestroUpdate($token, $update, $id_user, $correo, $nombre, $apellido, $address, $cumpleanos, $maestroasign)
+{
+    // CODIGO AQUI
+}
+
+*** public function adminAlumnoUpdate($token, $update, $id_user, $dni, $correo, $nombre, $apellido, $address, $cumpleanos)
+{
+    // CODIGO AQUI
+}
+
+*** public function adminClasesUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro)
+{
+    // CODIGO AQUI
+}
+
+//----------- Para Maestros -----------//
+
+*** public function teachersUpdate($token, $id_cali, $calificacion, $mensaje)
+{
+    // CODIGO AQUI
+}
+
+//----------- Para Alumnos -----------//
+
+*** public function alumnoUpdate()
+{
+    // CODIGO AQUI
+}
+
+*/
