@@ -20,7 +20,7 @@ export function Maestros() {
 
   const { maestros, clases, seleccionTeacher } = useUniversityContext();
   const [modalMaestro, setModalMaestro] = useState(false);
-  const [id_user, setId_user] = useState(null);
+  const [id_user, setId_user] = useState("null");
   const [correo, setCorreo] = useState("");
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -44,12 +44,16 @@ export function Maestros() {
     // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
   }
 
-  // funcion para eliminar con fetch 
-  // const eliminarDatos = async () => {
+  // funcion para eliminar maestro con fetch 
+  const eliminarMaestro = async () => {
 
-  //   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
-  //   const data1 = await res.json();
-  // }
+    const res = await fetch("http://localhost:3000/backend/dashboard/teachers/delete", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, id_user }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+  }
 
   function formatDate(dateString) {
     if (!dateString) return ''; // Manejar caso de fecha nula o indefinida
@@ -73,6 +77,9 @@ export function Maestros() {
             Lista de Maestros
           </Typography>
         </CardHeader>
+        <div className="h-1 mb-5">
+        <p className="text-center text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+        </div>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
@@ -99,7 +106,6 @@ export function Maestros() {
                     ? ""
                     : "border-b border-blue-gray-50"
                     }`;
-
                   return (
                     <tr key={nombre}>
                       <td className={className}>
@@ -145,7 +151,18 @@ export function Maestros() {
                               />
                             </IconButton>
                           </MenuHandler>
-                          <MenuList>
+                          <MenuList
+                            onClick={() => {
+                              setId_user(id_user);
+                              setMateriaAsign(name_materia);
+                              setAsignancion(id_materia);
+                              setCorreo(email);
+                              setNombre(nombre);
+                              setApellido(apellido);
+                              setAddress(address);
+                              setCumpleanos(cumpleaños);
+                            }}
+                          >
                             <MenuItem
                               onClick={() => {
                                 setId_user(id_user);
@@ -157,8 +174,14 @@ export function Maestros() {
                                 setAddress(address);
                                 setCumpleanos(cumpleaños);
                                 setModalMaestro(true);
-                              }}>Editar Datos</MenuItem>
-                            <MenuItem>Eliminarlo</MenuItem>
+                              }}
+                            >Editar Datos</MenuItem>
+                            <MenuItem
+                              onClick={() => {
+                                setId_user(id_user);
+                                eliminarMaestro();
+                              }}
+                            >Eliminarlo</MenuItem>
                           </MenuList>
                         </Menu>
                       </td>

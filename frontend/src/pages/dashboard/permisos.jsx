@@ -16,9 +16,9 @@ export function Permisos() {
   const { permisos, rolAll } = useUniversityContext();
   const [modalPermiso, setModalPermiso] = useState(false);
   const [correo, setCorreo] = useState("");
-  const [id_rol, setId_rol] = useState(null);
-  const [id_user, setId_user] = useState(null);
-  const [condicion, setCondicion] = useState(0);
+  const [id_rol, setId_rol] = useState("null");
+  const [id_user, setId_user] = useState("null");
+  const [condicion, setCondicion] = useState("0");
   const [respuesta, setRespuesta] = useState("");
   const token = localStorage.getItem("token");
   let update = "permisos";

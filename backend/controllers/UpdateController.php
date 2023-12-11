@@ -159,7 +159,7 @@ class UpdateController
                 }
             
         } catch (\Exception $e) {
-            echo json_encode(['error' => 'Sección inválida.'], 401);
+            echo json_encode(['error' => "Sección inválida. {$calificacion} "], 401);
         }
     }
 

@@ -27,10 +27,10 @@ export function Clases() {
   const [materiaid, setMateriaid] = useState("null");
   const [respuesta, setRespuesta] = useState("");
   const [paraeliminar, setParaeliminar] = useState("null")
-  const token = localStorage.getItem("token"); 
+  const token = localStorage.getItem("token");
   let update = "clases";
 
-  
+
   // funcion para editar con fetch
   const editClases = async () => {
 
@@ -43,13 +43,16 @@ export function Clases() {
     // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
   }
 
-  // funcion para eliminar con fetch 
-  // const eliminarDatos = async () => {
+  // funcion para eliminar Clase con fetch 
+  const eliminarClase = async () => {
 
-  //   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
-  //   const data1 = await res.json();
-  // }
-
+    const res = await fetch("http://localhost:3000/backend/dashboard/classes/delete", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, id_user, materiaid }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+  }
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -59,6 +62,9 @@ export function Clases() {
             Lista de Clases
           </Typography>
         </CardHeader>
+        <div className="h-1 mb-5">
+          <p className="text-center text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+        </div>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
@@ -82,8 +88,8 @@ export function Clases() {
               {clases.map(
                 ({ id_user, nombre_maestro, apellido_maestro, id_materia, name_materia, cantidad_alumnos, id_maestro }, key) => {
                   const className = `py-3 px-5 ${key === clases.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
+                    ? ""
+                    : "border-b border-blue-gray-50"
                     }`;
                   return (
                     <tr key={name_materia}>
@@ -124,7 +130,16 @@ export function Clases() {
                                 />
                               </IconButton>
                             </MenuHandler>
-                            <MenuList>
+                            <MenuList
+                              onClick={() => {
+                                setId_user(id_user);
+                                setParaeliminar(id_user);
+                                setMaestroAsign(nombre_maestro + " " + apellido_maestro);
+                                setMateriasss(name_materia);
+                                setMaestroid(id_maestro ? "null" : id_maestro);
+                                setMateriaid(id_materia);
+                              }}
+                            >
                               <MenuItem
                                 onClick={() => {
                                   setId_user(id_user);
@@ -135,7 +150,14 @@ export function Clases() {
                                   setMateriaid(id_materia);
                                   setModalClases(true);
                                 }}>Editar Datos</MenuItem>
-                              <MenuItem>Eliminarlo</MenuItem>
+                              <MenuItem
+                                onClick={() => {
+                                  setId_user(id_user);
+                                  setMateriaid(id_materia);
+                                  eliminarClase();
+
+                                }}
+                              >Eliminarlo</MenuItem>
                             </MenuList>
                           </Menu>
                         )}
@@ -180,25 +202,25 @@ export function Clases() {
                   onChange={(e) => {
                     const selectedMaestro = seleccionmateria.find((maestro) => maestro.nombre_maestro + " " + maestro.apellido_maestro === e.target.value);
                     const maestroSelect = asignTeacher.find((maestro) => maestro.nombre + " " + maestro.apellido === e.target.value);
-  
-                     if (selectedMaestro) {
-                       setMaestroAsign(selectedMaestro.nombre_maestro + " " + selectedMaestro.apellido_maestro);
-                       setId_user(selectedMaestro.id_user);
-                       } else if (maestroSelect) {
-                       setMaestroAsign(maestroSelect.nombre + " " + maestroSelect.apellido);
-                       setId_user(maestroSelect.id_user);
-                       setParaeliminar(maestroSelect.id_user);
-                       setMaestroid("null");
-                     } else if (!selectedMaestro) {
-                        setMaestroid(id_user ? paraeliminar : "null" );
-                        setId_user("null");
-                      } else if (!maestroSelect) {
-                        setMaestroid(id_user ? "null" : paraeliminar);
-                        setId_user("null");
-                      } 
+
+                    if (selectedMaestro) {
+                      setMaestroAsign(selectedMaestro.nombre_maestro + " " + selectedMaestro.apellido_maestro);
+                      setId_user(selectedMaestro.id_user);
+                    } else if (maestroSelect) {
+                      setMaestroAsign(maestroSelect.nombre + " " + maestroSelect.apellido);
+                      setId_user(maestroSelect.id_user);
+                      setParaeliminar(maestroSelect.id_user);
+                      setMaestroid("null");
+                    } else if (!selectedMaestro) {
+                      setMaestroid(id_user ? paraeliminar : "null");
+                      setId_user("null");
+                    } else if (!maestroSelect) {
+                      setMaestroid(id_user ? "null" : paraeliminar);
+                      setId_user("null");
+                    }
                   }}
                 >
-                  <option>{maestroAsign === null + " " + null ? 'Seleccione un Profesor' : maestroAsign }</option>
+                  <option>{maestroAsign === null + " " + null ? 'Seleccione un Profesor' : maestroAsign}</option>
                   {asignTeacher.map(({ nombre: nombreValue, apellido: apellidoVale }, key) => (
                     <option key={key} defaultValue={maestroAsign}>
                       {

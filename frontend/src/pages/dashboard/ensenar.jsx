@@ -16,8 +16,8 @@ export function Ensenar() {
   const [modalCali, setModalCali] = useState(false);
   const [modalComment, setModalComment] = useState(false);
   const [id_cali, setId_cali] = useState("null");
-  const [calificacion, setCalificacion] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [calificacion, setCalificacion] = useState("null");
+  const [mensaje, setMensaje] = useState("null");
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [respuesta, setRespuesta] = useState("");

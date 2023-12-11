@@ -30,41 +30,42 @@ export function Alumnos() {
   const token = localStorage.getItem("token");
   let update = "alumnos";
 
-// funcion para editar con fetch
-const editAlumno = async () => {
+  // funcion para editar con fetch
+  const editAlumno = async () => {
 
-  const res = await fetch("http://localhost:3000/backend/dashboard/students/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, update, id_user, dni, correo, nombre, apellido, address, cumpleanos }), })
-  const data = await res.json();
-  setRespuesta(data);
-  setTimeout(() => {
-    setRespuesta('');
-  }, 2000);
-  // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
-}
+    const res = await fetch("http://localhost:3000/backend/dashboard/students/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, update, id_user, dni, correo, nombre, apellido, address, cumpleanos }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+    // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
+  }
 
-// funcion para eliminar con fetch 
-// const eliminarDatos = async () => {
+  // funcion para eliminar maestro con fetch 
+  const eliminarAlumno = async () => {
 
-//   const res = await fetch("http://localhost:3000/backend/dashboard", { method: "GET", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token }), })
-//   const data1 = await res.json();
-// }
+    const res = await fetch("http://localhost:3000/backend/dashboard/students/delete", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, id_user }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+  }
 
+  function formatDate(dateString) {
+    if (!dateString) return ''; // Manejar caso de fecha nula o indefinida
 
-function formatDate(dateString) {
-  if (!dateString) return ''; // Manejar caso de fecha nula o indefinida
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate;
+  }
 
-  const date = new Date(dateString);
-  const formattedDate = date.toISOString().split('T')[0];
-  return formattedDate;
-}
-
-function convertirFechaOriginal(fecha) {
-  let partes = fecha.split("-");
-  let nuevaFecha = partes[0] + "-" + partes[1] + "-" + partes[2];
-  setCumpleanos(nuevaFecha);
-}
-
-console.log(alumnos);
+  function convertirFechaOriginal(fecha) {
+    let partes = fecha.split("-");
+    let nuevaFecha = partes[0] + "-" + partes[1] + "-" + partes[2];
+    setCumpleanos(nuevaFecha);
+  }
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -74,6 +75,9 @@ console.log(alumnos);
             Lista de Alumnos
           </Typography>
         </CardHeader>
+        <div className="h-1 mb-5">
+        <p className="text-center text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+        </div>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
@@ -97,8 +101,8 @@ console.log(alumnos);
               {alumnos.map(
                 ({ id_user, DNI, nombre, apellido, email, address, cumpleaños, }, key) => {
                   const className = `py-3 px-5 ${key === alumnos.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
+                    ? ""
+                    : "border-b border-blue-gray-50"
                     }`;
                   return (
                     <tr key={nombre}>
@@ -114,7 +118,7 @@ console.log(alumnos);
                               {nombre + " " + apellido}
                             </Typography>
                             <Typography className="text-xs font-normal text-blue-gray-500">
-                              {"DNI: " + " " +  DNI}
+                              {"DNI: " + " " + DNI}
                             </Typography>
                           </div>
                         </div>
@@ -135,7 +139,7 @@ console.log(alumnos);
                         </Typography>
                       </td>
                       <td className={className}>
-                      <Menu placement="left-start">
+                        <Menu placement="left-start">
                           <MenuHandler>
                             <IconButton size="sm" variant="text" color="blue-gray">
                               <EllipsisVerticalIcon
@@ -145,11 +149,21 @@ console.log(alumnos);
                               />
                             </IconButton>
                           </MenuHandler>
-                          <MenuList>
+                          <MenuList
+                            onClick={() => {
+                              setId_user(id_user);
+                              setDni(DNI)
+                              setCorreo(email);
+                              setNombre(nombre);
+                              setApellido(apellido);
+                              setAddress(address);
+                              setCumpleanos(cumpleaños);
+                            }}
+                          >
                             <MenuItem
                               onClick={() => {
                                 setId_user(id_user);
-                                setDni( DNI)
+                                setDni(DNI)
                                 setCorreo(email);
                                 setNombre(nombre);
                                 setApellido(apellido);
@@ -157,7 +171,12 @@ console.log(alumnos);
                                 setCumpleanos(cumpleaños);
                                 setModalAlumno(true);
                               }}>Editar Datos</MenuItem>
-                            <MenuItem>Eliminarlo</MenuItem>
+                            <MenuItem
+                              onClick={() => {
+                                setId_user(id_user);
+                                eliminarAlumno();
+                              }}
+                            >Eliminarlo</MenuItem>
                           </MenuList>
                         </Menu>
                       </td>
@@ -169,7 +188,6 @@ console.log(alumnos);
           </table>
         </CardBody>
       </Card>
-
       {modalAlumno ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

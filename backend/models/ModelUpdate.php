@@ -73,7 +73,7 @@ class ModelUpdate
 
     public function assignment ($id_cali, $calificacion, $mensaje) // REALIZADO CALIFICACIONES Y NOTAS DE MAESTROS
     {
-        $res = $this->db->query("UPDATE calificacion_observaciones SET calificacion = '$calificacion', observaciones = '$mensaje' WHERE id_cali = ($id_cali)"); // WHERE id_maestro = '4' AND id_materia = '5'
+        $res = $this->db->query("UPDATE calificacion_observaciones SET calificacion = '$calificacion', observaciones = '$mensaje' WHERE id_cali = '$id_cali'"); // WHERE id_maestro = '4' AND id_materia = '5'
         $this->db->close();
         return $res;
     }
