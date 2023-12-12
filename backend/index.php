@@ -16,7 +16,6 @@ $updateController = new UpdateController();
 $deleteController = new DeleteController();
 $createController = new CreateController();
 
-
 if ($method === "GET") {
     switch ($route[0]) {
 
@@ -288,7 +287,6 @@ if ($method === "POST") {
             // -------------------------------- PERMISOS DE MAESTROS ------------------------------------ //
             ////////////////////////////////////////////////////////////////////////////////////////////////
 
-
         case '/backend/dashboard/weighing/edit':
 
             $getData = json_decode(file_get_contents("php://input"), true);
@@ -304,7 +302,7 @@ if ($method === "POST") {
                 // http_response_code(400);
                 // echo "Datos de usuario Inválidos en la Solicitud.";
             }
-            break; //token, id_cali, calificacion, mensaje
+            break; 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
             // -------------------------------- PERMISOS DE ALUMNOS ------------------------------------- //
@@ -339,8 +337,7 @@ if ($method === "POST") {
             break;
 
         default:
-            echo json_encode(['error' => "NO ENCONTRAMOS LA RUTA."], 400);
-            //echo "NO ENCONTRAMOS LA RUTA.";
+            echo json_encode(['error' => "NO EXISTE LA RUTA."], 400);
             break;
     }
 }
