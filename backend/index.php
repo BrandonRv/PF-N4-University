@@ -4,6 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/backend/controllers/LoginController.p
 require_once $_SERVER["DOCUMENT_ROOT"] . "/backend/controllers/PerfilController.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/backend/controllers/UpdateController.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/backend/controllers/DeleteController.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/backend/controllers/CreateController.php";
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Authorization, Content-Type");
 
@@ -13,6 +14,22 @@ $loginController = new LoginController();
 $perfilController = new PerfilController();
 $UpdateController = new UpdateController();
 $deleteController = new DeleteController();
+$createController = new CreateController();
+
+
+if ($method === "GET") {
+    switch ($route[0]) {
+
+        case '/backend/index.php':
+
+            echo "Este es el Index";
+            break;
+
+        default:
+            echo "NO ENCONTRAMOS LA RUTA.";
+            break;
+    }
+}
 
 if ($method === "POST") {
 
@@ -201,20 +218,70 @@ if ($method === "POST") {
             }
             break;
 
-            case '/backend/dashboard/classes/delete':
+        case '/backend/dashboard/classes/delete':
 
-                $postData = json_decode(file_get_contents("php://input"), true);
-    
-                if (isset($postData["token"]) && isset($postData["materiaid"])) {
-                    $token = $postData["token"];
-                    $id_materia = $postData["materiaid"];
-                    $deleteController->materiaDelete($token, $id_materia);
-                } else {
-                    echo json_encode(['error' => 'Sección inválida.'], 400);
-                    // http_response_code(400);
-                    // echo "Datos de usuario Inválidos en la Solicitud.";
-                }
-                break;
+            $postData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($postData["token"]) && isset($postData["materiaid"])) {
+                $token = $postData["token"];
+                $id_materia = $postData["materiaid"];
+                $deleteController->materiaDelete($token, $id_materia);
+            } else {
+                echo json_encode(['error' => 'Sección inválida.'], 400);
+                // http_response_code(400);
+                // echo "Datos de usuario Inválidos en la Solicitud.";
+            }
+            break;
+
+        case '/backend/dashboard/teachers/create':
+
+            $putData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($putData["token"]) && isset($putData["correo"]) && isset($putData["nombre"]) && isset($putData["apellido"]) && isset($putData["address"]) && isset($putData["cumpleanos"]) && isset($putData["asignancion"])) {
+                $token = $putData["token"];
+                $correo = $putData["correo"];
+                $nombre = $putData["nombre"];
+                $apellido = $putData["apellido"];
+                $address = $putData["address"];
+                $cumpleanos = $putData["cumpleanos"];
+                $maestroasign = $putData["asignancion"];
+                $createController->maestroCreate($token, $correo, $nombre, $apellido, $address, $cumpleanos, $maestroasign);
+            } else {
+                echo json_encode(['error' => 'Sección inválida.'], 400);
+            }
+            break;
+
+        case '/backend/dashboard/students/create':
+
+            $putData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($putData["token"]) && isset($putData["dni"]) && isset($putData["correo"]) && isset($putData["nombre"]) && isset($putData["apellido"]) && isset($putData["address"]) && isset($putData["cumpleanos"])) {
+                $token = $putData["token"];
+                $correo = $putData["correo"];
+                $dni = $putData["dni"];
+                $nombre = $putData["nombre"];
+                $apellido = $putData["apellido"];
+                $address = $putData["address"];
+                $cumpleanos = $putData["cumpleanos"];
+                $createController->studentCreate($token, $correo, $dni, $nombre, $apellido, $address, $cumpleanos);
+            } else {
+                echo json_encode(['error' => 'Sección inválida.'], 400);
+            }
+            break;
+
+        case '/backend/dashboard/classes/create':
+
+            $putData = json_decode(file_get_contents("php://input"), true);
+
+            if (isset($putData["token"]) && isset($putData["id_user"]) && isset($putData["materiasss"])) { 
+                $token = $putData["token"];
+                $id_user =$putData["id_user"];
+                $namemateria = $putData["materiasss"];
+                $createController->materiaCreate($token, $id_user, $namemateria);
+            } else {
+                echo json_encode(['error' => 'Sección inválida.'], 400);
+            }
+            break;
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,14 +293,14 @@ if ($method === "POST") {
 
             $getData = json_decode(file_get_contents("php://input"), true);
 
-            if (isset($getData["token"]) && isset($getData["id_cali"]) && isset($getData["calificacion"]) && isset($getData["mensaje"])) {
+            if (isset($getData["token"]) && isset($getData["id_cali"])) {
                 $token = $getData["token"];
                 $id_cali = $getData["id_cali"];
                 $calificacion = $getData["calificacion"];
                 $mensaje = $getData["mensaje"];
                 $UpdateController->teachersUpdate($token, $id_cali, $calificacion, $mensaje);
             } else {
-                echo json_encode(['error' => 'Sección inválida.'], 400);
+                echo json_encode(['error' => "Sección inválida."], 400);
                 // http_response_code(400);
                 // echo "Datos de usuario Inválidos en la Solicitud.";
             }
@@ -278,13 +345,8 @@ if ($method === "POST") {
     }
 }
 
-if ($method === "GET") {
+if ($method === "PUT") {
     switch ($route[0]) {
-
-        case '/backend/index.php':
-
-            echo "Este es el Index";
-            break;
 
         default:
             echo "NO ENCONTRAMOS LA RUTA.";

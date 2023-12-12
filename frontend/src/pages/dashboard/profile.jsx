@@ -189,12 +189,12 @@ export function Profile() {
                     Edita tus datos
                   </h4>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-1 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalPerfil(false)}
                   >
-                    <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
-                      x
-                    </span>
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
                   </button>
                 </div>
                 <div className="relative p-0 flex-auto">
@@ -215,7 +215,7 @@ export function Profile() {
                 <label>Correo</label>
                 <input type="email" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setCorreo(e.target.value)} defaultValue={usuario[0]?.email} />
                 <label>Contraseña</label>
-                <input type="password" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setContrasena(e.target.value)} placeholder="*******" required/>
+                <input type="password" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setContrasena(e.target.value)} placeholder="*******" required />
                 <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button

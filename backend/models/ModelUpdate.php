@@ -62,7 +62,7 @@ class ModelUpdate
         $res = $this->db->query("UPDATE materias SET name_materia = '$namemateria' WHERE id_materia = '$id_materia'");
         $res1 = $this->db->query("UPDATE usuarios SET maestro = NULL WHERE id_user = ($id_maestro)");
         $res2 = $this->db->query("UPDATE usuarios SET maestro = '$id_materia' WHERE id_user = ($id_user)"); 
-        return array($res, $res1, $res2);
+        return array($res, $res1, $res2); 
     }
 
 
@@ -73,7 +73,9 @@ class ModelUpdate
 
     public function assignment ($id_cali, $calificacion, $mensaje) // REALIZADO CALIFICACIONES Y NOTAS DE MAESTROS
     {
-        $res = $this->db->query("UPDATE calificacion_observaciones SET calificacion = '$calificacion', observaciones = '$mensaje' WHERE id_cali = '$id_cali'"); // WHERE id_maestro = '4' AND id_materia = '5'
+        $mensajeInsert = ($mensaje === '') ? NULL : $mensaje;
+        $calificacionIsert = ($calificacion === '') ? NULL : $calificacion;
+        $res = $this->db->query("UPDATE calificacion_observaciones SET calificacion = ($calificacionIsert), observaciones = '$mensajeInsert' WHERE id_cali = '$id_cali'"); // WHERE id_maestro = '4' AND id_materia = '5'
         $this->db->close();
         return $res;
     }

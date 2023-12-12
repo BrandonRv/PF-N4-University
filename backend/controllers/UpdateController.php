@@ -115,7 +115,7 @@ class UpdateController
                         'respon' => $respon[0],
                         'respon1' => $respon[1],
                         'respon2' => $respon[2],
-                        'error' => 'Datos Actualizados.'
+                        'error' => "Datos Actualizados."
                     ]);
                 } else {
                     echo json_encode([
@@ -150,7 +150,7 @@ class UpdateController
                     $respon = $this->model->assignment($id_cali, $calificacion, $mensaje); //------ REALIZADO ------//
                     echo json_encode([
                         'respuesta' => $respon,
-                        'error' => 'Dato Actualizado.'
+                        'error' => "Dato Actualizado."
                     ]);
                 } else {
                     echo json_encode([
@@ -159,7 +159,7 @@ class UpdateController
                 }
             
         } catch (\Exception $e) {
-            echo json_encode(['error' => "Sección inválida. {$calificacion} "], 401);
+            echo json_encode(['error' => "Sección inválida."], 401);
         }
     }
 

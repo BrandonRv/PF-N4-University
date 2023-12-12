@@ -35,6 +35,8 @@ export function Ensenar() {
     // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
   }
 
+  console.log(respuesta)
+
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
@@ -99,26 +101,26 @@ export function Ensenar() {
                       <td className={className}>
                         <div className="flex">
                           <Typography
-                            onClick={() => { 
+                            onClick={() => {
                               setId_cali(id_cali);
                               setNombre(nombre_alumno);
                               setApellido(apellido_alumno);
-                              setCalificacion(calificacion); 
+                              setCalificacion(calificacion);
                               setMensaje(observaciones);
-                              setModalCali(true); 
+                              setModalCali(true);
                             }}
                             className="text-xs font-semibold text-blue-gray-600 cursor-pointer"
                           >
                             {nombre_alumno === null ? null : <i class="fa-solid fa-notes-medical fa-xl"></i>}
                           </Typography>
                           <Typography
-                            onClick={() => { 
+                            onClick={() => {
                               setId_cali(id_cali);
                               setNombre(nombre_alumno);
                               setApellido(apellido_alumno);
-                              setCalificacion(calificacion); 
-                              setMensaje(observaciones); 
-                              setModalComment(true);  
+                              setCalificacion(calificacion);
+                              setMensaje(observaciones);
+                              setModalComment(true);
                             }}
                             className="text-xs font-semibold ml-4 text-blue-gray-600 cursor-pointer"
                           >
@@ -145,12 +147,12 @@ export function Ensenar() {
                     Añadir Calificación
                   </h4>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-1 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalCali(false)}
                   >
-                    <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
-                      ×
-                    </span>
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
@@ -197,12 +199,12 @@ export function Ensenar() {
                     Añadir Mensaje
                   </h4>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-1 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalComment(false)}
                   >
-                    <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
-                      ×
-                    </span>
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
@@ -210,7 +212,7 @@ export function Ensenar() {
                     Ingresa un Mensaje u Observación para {nombre + " " + apellido}
                   </p>
                 </div>
-                <input type="text" className="p-4 rounded-lg border border-gray-800" onChange={(e) => setMensaje(e.target.value)} placeholder="Ingrese un Mensaje"/>
+                <input type="text" className="p-4 rounded-lg border border-gray-800" onChange={(e) => setMensaje(e.target.value)} placeholder="Ingrese un Mensaje" />
                 <div className="flex mt-6 mb-6 flex-col gap-6">
                   <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
                 </div>

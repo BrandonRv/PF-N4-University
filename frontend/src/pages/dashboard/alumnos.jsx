@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import {
   Card,
+  Button,
   CardHeader,
   CardBody,
   Typography,
@@ -19,13 +20,15 @@ export function Alumnos() {
 
   const { alumnos } = useUniversityContext();
   const [modalAlumno, setModalAlumno] = useState(false);
+  const [modalCreateAlumno, setModalCreateAlumno] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [id_user, setId_user] = useState(null);
-  const [dni, setDni] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [address, setAddress] = useState("");
-  const [cumpleanos, setCumpleanos] = useState("");
+  const [dni, setDni] = useState("null");
+  const [correo, setCorreo] = useState("null");
+  const [nombre, setNombre] = useState("null");
+  const [apellido, setApellido] = useState("null");
+  const [address, setAddress] = useState("null");
+  const [cumpleanos, setCumpleanos] = useState("2020-10-24");
   const [respuesta, setRespuesta] = useState("");
   const token = localStorage.getItem("token");
   let update = "alumnos";
@@ -34,6 +37,18 @@ export function Alumnos() {
   const editAlumno = async () => {
 
     const res = await fetch("http://localhost:3000/backend/dashboard/students/edit", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, update, id_user, dni, correo, nombre, apellido, address, cumpleanos }), })
+    const data = await res.json();
+    setRespuesta(data);
+    setTimeout(() => {
+      setRespuesta('');
+    }, 2000);
+    // Devuelve una Respuesta True si se Realizo correctamente la Actualizacion de Datos
+  }
+
+  // funcion para crear alumno con fetch
+  const crearAlumno = async () => {
+
+    const res = await fetch("http://localhost:3000/backend/dashboard/students/create", { method: "POST", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ token, correo, dni, nombre, apellido, address, cumpleanos }), })
     const data = await res.json();
     setRespuesta(data);
     setTimeout(() => {
@@ -75,8 +90,8 @@ export function Alumnos() {
             Lista de Alumnos
           </Typography>
         </CardHeader>
-        <div className="h-1 mb-5">
-        <p className="text-center text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+        <div className="h-1 mb-5 flex justify-end items-center">
+          <div className="w-full"><p className="text-center text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p></div><Button onClick={() => setModalCreateAlumno(true)} className="-mt-1 whitespace-nowrap pr-10 mr-5">Agregar Alumno Nuevo</Button>
         </div>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
@@ -149,17 +164,7 @@ export function Alumnos() {
                               />
                             </IconButton>
                           </MenuHandler>
-                          <MenuList
-                            onClick={() => {
-                              setId_user(id_user);
-                              setDni(DNI)
-                              setCorreo(email);
-                              setNombre(nombre);
-                              setApellido(apellido);
-                              setAddress(address);
-                              setCumpleanos(cumpleaños);
-                            }}
-                          >
+                          <MenuList>
                             <MenuItem
                               onClick={() => {
                                 setId_user(id_user);
@@ -174,7 +179,9 @@ export function Alumnos() {
                             <MenuItem
                               onClick={() => {
                                 setId_user(id_user);
-                                eliminarAlumno();
+                                setNombre(nombre);
+                                setApellido(apellido);
+                                setModalDelete(true);
                               }}
                             >Eliminarlo</MenuItem>
                           </MenuList>
@@ -198,12 +205,12 @@ export function Alumnos() {
                     Editar Alumno
                   </h4>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-1 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setModalAlumno(false)}
                   >
-                    <span className="bg-transparent text-black h-6 w-6 text-3xl block outline-none focus:outline-none">
-                      x
-                    </span>
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
                   </button>
                 </div>
                 <div className="relative p-0 flex-auto">
@@ -254,7 +261,110 @@ export function Alumnos() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-
+      {modalDelete ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-full max-w-lg max-h-full bg-white rounded-lg shadow dark:bg-gray-700 pb-6 pt-4 lg:pb-6 lg:pt-4 ">
+              <button type="button" onClick={() => setModalDelete(false)} className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+              </button>
+              <h3 id="titutlo" className="pb-2 mb-4 border-b-2 text-xl font-medium text-gray-900 dark:text-white px-6 lg:px-8">Confirme su Eliminación</h3>
+              <form className="space-y-6 relative px-6 lg:px-8">
+                <label className="block text-lg font-medium text-gray-900 dark:text-white">
+                  ¿Está seguro de que desea Eliminar a {nombre + " " + apellido}<span className="font-extrabold"> </span>?
+                </label>
+                <div id="btn_modal" className="flex justify-end gap-2 mt-4">
+                  <button
+                    type="button"
+                    className="w-fit text-white bg-gray-600 hover:bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    onClick={() => setModalDelete(false)}
+                  >NO</button>
+                  <button s
+                    type="button"
+                    className="w-fit text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                    onClick={() => {
+                      eliminarAlumno();
+                      setModalDelete(false);
+                    }}
+                  >SI</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
+      {modalCreateAlumno ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 p-8 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between  border-b border-solid border-blueGray-300 rounded-t">
+                  <h4 className="text-2xl">
+                    Agrega un Alumno Nuevo
+                  </h4>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 -mt-4 text-black opacity-1 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setModalCreateAlumno(false)}
+                  >
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="relative p-0 flex-auto">
+                  <p className="my-4 text-blueGray-500 text-lg text-gray-700 font-normal leading-relaxed">
+                    Ingresa los Datos aqui, por favor.
+                  </p>
+                </div>
+                <label>DNI</label>
+                <input type="number" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setDni(e.target.value)} placeholder="Ingrese su Cedula o DNI" />
+                <label>Correo Electronico</label>
+                <input
+                  type="email"
+                  className="p-2 rounded-lg border border-gray-800"
+                  placeholder="Ingrese el Correo Electronico"
+                  onChange={(e) => setCorreo(e.target.value)}
+                />
+                <label>Nombres</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setNombre(e.target.value)} placeholder="Nombres" />
+                <label>Apellidos</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setApellido(e.target.value)} placeholder="Apellido" />
+                <label>Dirección</label>
+                <input type="text" className="p-2 rounded-lg border border-gray-800" onChange={(e) => setAddress(e.target.value)} placeholder="Ingrese la Dirección" />
+                <label>Fecha de Nacimiento</label>
+                <input type="date" className="p-2 rounded-lg border border-gray-800" onChange={(e) => convertirFechaOriginal(e.target.value)} />
+                <div className="flex mt-6 mb-6 flex-col gap-6">
+                  <p className="text-center mt-4 text-green-600 text-sm">{respuesta?.error && <p>{respuesta?.error}</p>}</p>
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    data-modal-hide="Modaless"
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setModalCreateAlumno(false)}
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    className="bg-gray-900 text-gray-100 active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      crearAlumno();
+                      setModalCreateAlumno(false);
+                    }}
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
     </div>
   );
 }
