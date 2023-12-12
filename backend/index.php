@@ -12,7 +12,7 @@ $route = explode("?", $_SERVER["REQUEST_URI"]);
 $method = $_SERVER["REQUEST_METHOD"];
 $loginController = new LoginController();
 $perfilController = new PerfilController();
-$UpdateController = new UpdateController();
+$updateController = new UpdateController();
 $deleteController = new DeleteController();
 $createController = new CreateController();
 
@@ -67,7 +67,7 @@ if ($method === "POST") {
                 $contrasena = $postData["contrasena"];
                 $direccion = $postData["direccion"];
                 $cumpleanos = $postData["cumpleanos"];
-                $UpdateController->profilEdit($token, $dni, $nombre, $apellido, $correo, $contrasena, $direccion, $cumpleanos);
+                $updateController->profilEdit($token, $dni, $nombre, $apellido, $correo, $contrasena, $direccion, $cumpleanos);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario incompletos en la solicitud.";
@@ -98,7 +98,7 @@ if ($method === "POST") {
                 $id_maestro = null;
                 $maestroasign = null;
                 $id_materia = null;
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
+                $updateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
             } else {
                 echo json_encode(['error' => 'Sección inválida.'], 400);
                 // http_response_code(400);
@@ -126,7 +126,7 @@ if ($method === "POST") {
                 $namemateria = null;
                 $id_maestro = null;
                 $id_materia = null;
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
+                $updateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
             } else {
                 echo json_encode(['error' => 'Sección inválida.'], 400);
                 // http_response_code(400);
@@ -154,7 +154,7 @@ if ($method === "POST") {
                 $condicion = null;
                 $maestroasign = null;
                 $id_materia = null;
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
+                $updateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
             } else {
                 echo json_encode(['error' => 'Sección inválida.'], 400);
                 // http_response_code(400);
@@ -182,7 +182,7 @@ if ($method === "POST") {
                 $correo = null;
                 $condicion = null;
                 $maestroasign = null;
-                $UpdateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
+                $updateController->adminUpdate($token, $update, $id_user, $id_materia, $namemateria, $id_maestro, $nombre, $id_rol, $apellido, $address, $cumpleanos, $dni, $correo, $condicion, $maestroasign);
             } else {
                 echo json_encode(['error' => 'Sección inválida.'], 400);
                 // http_response_code(400);
@@ -298,7 +298,7 @@ if ($method === "POST") {
                 $id_cali = $getData["id_cali"];
                 $calificacion = $getData["calificacion"];
                 $mensaje = $getData["mensaje"];
-                $UpdateController->teachersUpdate($token, $id_cali, $calificacion, $mensaje);
+                $updateController->teachersUpdate($token, $id_cali, $calificacion, $mensaje);
             } else {
                 echo json_encode(['error' => "Sección inválida."], 400);
                 // http_response_code(400);
@@ -317,7 +317,7 @@ if ($method === "POST") {
             if (isset($getData["token"]) && isset($getData["id_materia"])) {
                 $token = $getData["token"];
                 $id_materia = $getData["id_materia"];
-                $UpdateController->alumnoUpdate($token, $id_materia);
+                $updateController->alumnoUpdate($token, $id_materia);
             } else {
                 http_response_code(400);
                 echo "Datos de usuario Inválidos en la Solicitud.";
