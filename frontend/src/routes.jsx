@@ -5,7 +5,7 @@ import {
   ServerStackIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Permisos, Maestros, Alumnos, Clases, Ensenar, Calificaciones, Materias } from "@/pages/dashboard";
-import { SignIn } from "@/pages/auth";
+import { Login } from "@/pages/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -90,8 +90,8 @@ export const routes = [
         icon: <ServerStackIcon {...icon} />,
         rol: rolSeccion,
         name: "Login",
-        path: "/sign-in",
-        element: <SignIn />,
+        path: "/login",
+        element: <Login />,
       },
     ],
   },

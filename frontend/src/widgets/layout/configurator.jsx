@@ -57,7 +57,7 @@ export function Configurator() {
 
 const cerrarSeccions = () => {
   localStorage.removeItem('token');
-  navigate("/auth/sign-in");
+  navigate("/auth/login");
 }
 
   return (

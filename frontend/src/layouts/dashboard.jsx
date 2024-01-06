@@ -27,15 +27,15 @@ export function Dashboard() {
   const body = document.body;
 
   if (!token) {
-    navigate("/auth/sign-in");
+    navigate("/auth/login");
   } else if (seccionClose === seccion) {
-    navigate("/auth/sign-in");
+    navigate("/auth/login");
   } else if (seccionExp === seccion) {
-    navigate("/auth/sign-in");
+    navigate("/auth/login");
   } else if (seccionRol === seccion) {
-    navigate("/auth/sign-in");
+    navigate("/auth/login");
   } else if (condicion === seccion) {
-    navigate("/auth/sign-in");
+    navigate("/auth/login");
   }
 
   if (sidenavType === "white") {

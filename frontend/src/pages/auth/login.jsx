@@ -10,7 +10,7 @@ import logo from "../../assets/logo.png";
 import { useRef } from "react";
 import useDarkMode from "../../service/useDarkMode";
 
-export function SignIn() {
+export function Login() {
 
   const { setCorreo, setContrasena, error, handleSubmit, correo, contrasena, rol} = useUniversityContext();
   const iconRef = useRef(null);
@@ -107,4 +107,4 @@ export function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;

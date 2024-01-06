@@ -56,7 +56,7 @@ export function Home() {
                 <MenuItem>Extender Sección</MenuItem>
                 <MenuItem onClick={() => {
                   localStorage.removeItem('token');
-                  navigate("/auth/sign-in");}}
+                  navigate("/auth/login");}}
                   >Salir de la Sección</MenuItem>
               </MenuList>
             </Menu>

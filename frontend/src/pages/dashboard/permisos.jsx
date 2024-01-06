@@ -23,6 +23,8 @@ export function Permisos() {
   const token = localStorage.getItem("token");
   let update = "permisos";
 
+
+
   // funcion para editar con fetch
   const editPermisos = async () => {
 

@@ -5,6 +5,7 @@ const UniversityContext = createContext();
 export const useUniversityContext = () => useContext(UniversityContext);
 
 export const UniversityProvider = ({ children }) => {
+  //const PORT = process.env.PORT ?? 5500;
   const [rol, setRol] = useState(null);
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
@@ -51,7 +52,8 @@ export const UniversityProvider = ({ children }) => {
         setRol(parseInt(data?.rol, 10));
         sessionStorage.setItem("rol", data.rol);
         if (data.error !== 'Sin Autorización') {
-        window.location.href = "/dashboard/home";
+
+        window.location.href = `/dashboard/home`; //http://127.0.0.1:5500:${PORT}
       }
       })
       .catch((err) => {
